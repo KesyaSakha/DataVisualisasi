@@ -2,16 +2,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Judul Besar dengan font lebih besar dan bold
-st.markdown("<h1 style='text-align: center; color: #000080;'>Tugas Data Visualisasi</h1>", unsafe_allow_html=True)
-
-# Tulisan kecil tentang sumber data
-st.write("Data diambil dari website https://www.boxofficemojo.com/weekend/by-year/2024/?area=ID")
-
-# Nama dan NPM
-st.write("Nama: Kesya Sakha Nesya Arimawan")
-st.write("NPM: 21082010169")
-
 # Memuat data dari file CSV
 df = pd.read_csv('film_data_2024.csv')
 

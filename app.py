@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Judul Besar dengan font lebih besar dan bold
-st.markdown("<h1 style='text-align: center; color: #000080;'>Tugas Data Visualisasi</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #F4C2C2;'>Tugas Data Visualisasi</h1>", unsafe_allow_html=True)
 
 # Tulisan kecil tentang sumber data
-st.write("Data diambil dari website https://www.boxofficemojo.com/weekend/by-year/2024/?area=ID")
+st.write("Data diambil dari website Indonesian Box Office Weekends For 2024 - Box Office Mojo")
 
 # Nama dan NPM
 st.write("Nama: Kesya Sakha Nesya Arimawan")

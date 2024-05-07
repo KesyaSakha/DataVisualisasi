@@ -1,0 +1,13 @@
+pandas
+matplotlib
+seaborn
+streamlit
+BeautifulSoup
+requests
+matplotlib.pyplot
+display
+HTML
+clear_output
+ipywidgets
+IPython.display
+bs4

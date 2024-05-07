@@ -1,12 +1,13 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 # Judul Besar dengan font lebih besar dan bold
 st.markdown("<h1 style='text-align: center; color: #F4C2C2;'>Tugas Data Visualisasi</h1>", unsafe_allow_html=True)
 
 # Tulisan kecil tentang sumber data
-st.write("Data diambil dari website Indonesian Box Office Weekends For 2024 - Box Office Mojo")
+st.markdown("[Indonesia Box Office Mojo](https://www.boxofficemojo.com/weekend/by-year/2024/?area=ID) - Data diambil dari Indonesia Box Office Mojo")
 
 # Nama dan NPM
 st.write("Nama: Kesya Sakha Nesya Arimawan")
@@ -42,10 +43,19 @@ selected_distributor = st.selectbox('Pilih Distributor:', dropdown_options)
 if selected_distributor != 'Pilih Distributor':
     display_movie_description(selected_distributor)
 
+# Fungsi untuk mengubah format menjadi miliar
+def billions(x, pos):
+    return '%1.1fB' % (x * 1e-9)
+
 # Menampilkan pie chart menggunakan matplotlib di Streamlit
 st.write('## Persentase Pendapatan per Distributor pada Tahun 2024')
 colors = ['#FFC0CB', '#FF69B4', '#DDA0DD', '#9370DB', '#ADD8E6', '#87CEFA', '#B0C4DE', '#00BFFF', '#1E90FF', '#6495ED']
 plt.figure(figsize=(10, 6))
 plt.pie(revenue_by_distributor, labels=revenue_by_distributor.index, autopct='%1.1f%%', startangle=140, colors=colors)
 plt.axis('equal')
+
+# Menambahkan angka detailnya dalam miliar
+formatter = FuncFormatter(billions)
+plt.gca().yaxis.set_major_formatter(formatter)
+
 st.pyplot(plt)

@@ -1,6 +1,19 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+
+# Fungsi untuk mengubah format menjadi miliar
+def billions(x, pos):
+    return '%1.1fB' % (x * 1e-9)
+
+# Fungsi untuk format autopct
+def autopct_format(values):
+    def my_format(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{v:d}B\n({p:.1f}%)'.format(p=pct,v=val)
+    return my_format
 
 # Judul Besar dengan font lebih besar dan bold
 st.markdown("<h1 style='text-align: center; color: #F4C2C2;'>Tugas Data Visualisasi</h1>", unsafe_allow_html=True)

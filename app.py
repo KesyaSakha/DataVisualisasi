@@ -46,6 +46,6 @@ if selected_distributor != 'Pilih Distributor':
 st.write('## Persentase Pendapatan per Distributor pada Tahun 2024')
 colors = ['#FFC0CB', '#FF69B4', '#DDA0DD', '#9370DB', '#ADD8E6', '#87CEFA', '#B0C4DE', '#00BFFF', '#1E90FF', '#6495ED']
 plt.figure(figsize=(10, 6))
-plt.pie(revenue_by_distributor, labels=revenue_by_distributor.index, autopct='%1.1f%%', startangle=140, colors=colors)
+plt.pie(revenue_by_distributor, labels=revenue_by_distributor.index, autopct=autopct_format(revenue_by_distributor), startangle=140, colors=colors)
 plt.axis('equal')
 st.pyplot(plt)

@@ -1,46 +1,43 @@
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
+import matplotlib.pyplot as plt
 import io
-import asyncio
 
-# Function to get document from URL
+# Fungsi untuk mengambil dokumen HTML dari URL
 def get_doc(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        doc = BeautifulSoup(response.text, 'html.parser')
-        return doc
-    except Exception as e:
-        st.error(f"Failed to load page: {e}")
-        return None
+    response = requests.get(url)
+    doc = BeautifulSoup(response.text, 'html.parser')
+    if response.status_code != 200:
+        raise Exception('Failed to load page {}'.format(response))
+    return doc
 
-# Function to scrape data from a single page
-def scrape_single_page(url):
-    doc = get_doc(url)
-    if doc:
-        titles = get_book_titles(doc)
-        prices = get_book_price(doc)
-        stocks_availability = get_stock_availability(doc)
-        urls = get_book_url(doc.find_all('h3'))
-        return titles, prices, stocks_availability, urls
-    return [], [], [], []
-
-# Function to get book titles
+# Fungsi untuk mendapatkan judul buku
 def get_book_titles(doc):
-    return [tag.text for tag in doc.find_all('h3')]
+    book_title_tags = doc.find_all('h3')
+    book_titles = []
+    for tag in book_title_tags:
+        book_titles.append(tag.text)
+    return book_titles
 
-# Function to get book prices
+# Fungsi untuk mendapatkan harga buku
 def get_book_price(doc):
-    return [tag.text.replace('Â', '') for tag in doc.find_all('p', class_='price_color')]
+    book_price_tags = doc.find_all('p', class_='price_color')
+    book_prices = []
+    for tag in book_price_tags:
+        book_prices.append(tag.text.replace('Â', ''))
+    return book_prices
 
-# Function to get stock availability
+# Fungsi untuk mendapatkan ketersediaan stok buku
 def get_stock_availability(doc):
-    return [tag.text.strip() for tag in doc.find_all('p', class_='instock availability')]
+    book_stock_tags = doc.find_all('p', class_='instock availability')
+    book_stock = []
+    for tag in book_stock_tags:
+        book_stock.append(tag.text.strip())
+    return book_stock
 
-# Function to get book URLs
+# Fungsi untuk mendapatkan URL buku
 def get_book_url(book_title_tags):
     book_urls = []
     for article in book_title_tags:
@@ -51,51 +48,50 @@ def get_book_url(book_title_tags):
                 book_urls.append(links)
     return book_urls
 
-# Function to scrape data from multiple pages
-async def scrape_multiple_pages(n):
+# Fungsi untuk melakukan scraping data dari beberapa halaman
+def scrape_multiple_pages(n):
     base_url = 'https://books.toscrape.com/catalogue/page-'
-    tasks = [scrape_single_page(base_url + str(page) + '.html') for page in range(1, n+1)]
-    return await asyncio.gather(*tasks)
+    titles, prices, stocks_availability, urls = [], [], [], []
+    
+    for page in range(1, n+1):
+        doc = get_doc(base_url + str(page) + '.html')
+        titles.extend(get_book_titles(doc))
+        prices.extend(get_book_price(doc))
+        stocks_availability.extend(get_stock_availability(doc))
+        urls.extend(get_book_url(doc.find_all('h3')))
+        
+    book_dict = {
+        'TITLE': titles,
+        'PRICE': prices,
+        'STOCK AVAILABILITY': stocks_availability,
+        'URL': urls
+    }
+    return pd.DataFrame(book_dict)
 
-# Streamlit App
+# Aplikasi Streamlit
 def main():
     st.title('Book Data Analysis')
-    n_pages = st.sidebar.slider("Select number of pages to scrape", 1, 10, 5)
 
-    # Scrape data from multiple pages
-    try:
-        scraped_data = asyncio.run(scrape_multiple_pages(n_pages))
-        st.write(scraped_data)  # Add this line to inspect the scraped data
-    except Exception as e:
-        st.error(f"An error occurred while scraping: {e}")
-        return
+    # Scraping data dari multiple pages
+    df = scrape_multiple_pages(5)
 
-    # Convert scraped data to DataFrame
-    try:
-        titles, prices, stocks_availability, urls = zip(*scraped_data)
-    except Exception as e:
-        st.error(f"Error in zipping scraped data: {e}")
-        return
-        
-    # Convert scraped data to DataFrame
-    titles, prices, stocks_availability, urls = zip(*scraped_data)
-    df = pd.DataFrame({
-        'TITLE': [title for sublist in titles for title in sublist],
-        'PRICE': [price for sublist in prices for price in sublist],
-        'STOCK AVAILABILITY': [stock for sublist in stocks_availability for stock in sublist],
-        'URL': [url for sublist in urls for url in sublist]
-    })
-
-    # Display histogram of prices
-    df['PRICE'] = df['PRICE'].str.replace('£', '').astype(float)
+    # Tampilkan histogram dari kolom 'PRICE'
+    df['PRICE'] = df['PRICE'].str.replace('£', '').astype(float) # Mengubah harga menjadi tipe data numerik
     fig, ax = plt.subplots()
     ax.hist(df['PRICE'], bins=20, color='skyblue', edgecolor='black')
     ax.set_xlabel('Price (£)')
     ax.set_ylabel('Frequency')
     ax.set_title('Distribution of Book Prices')
-    st.pyplot(fig)
+    
+    # Simpan gambar histogram sebagai BytesIO
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
 
-    # Display histogram of stock availability
+    # Tampilkan gambar histogram di Streamlit
+    st.image(buffer)
+
+    # Tampilkan histogram dari kolom 'STOCK AVAILABILITY'
     st.subheader('Distribution of Stock Availability')
     fig2, ax2 = plt.subplots()
     df['STOCK AVAILABILITY'].value_counts().plot(kind='bar', color='skyblue', edgecolor='black', ax=ax2)

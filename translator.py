@@ -1,19 +1,23 @@
 import streamlit as st
 from gtts import gTTS
-from playsound import playsound
+from pydub import AudioSegment
+from pydub.playback import play
 from googletrans import Translator
+import os
 
 # Fungsi untuk membaca teks dalam bahasa Inggris
 def read_english(text):
     english_tts = gTTS(text=text, lang='en')
     english_tts.save("english.mp3")
-    playsound("english.mp3")
+    sound = AudioSegment.from_mp3("english.mp3")
+    play(sound)
 
 # Fungsi untuk membaca teks dalam bahasa Indonesia
 def read_indonesian(text):
     indonesian_tts = gTTS(text=text, lang='id')
     indonesian_tts.save("indonesian.mp3")
-    playsound("indonesian.mp3")
+    sound = AudioSegment.from_mp3("indonesian.mp3")
+    play(sound)
 
 # Fungsi untuk menerjemahkan teks dari bahasa Inggris ke bahasa Indonesia
 def translate_to_indonesian(text):

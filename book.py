@@ -76,11 +76,14 @@ def main():
     df = scrape_multiple_pages(5)
 
     # Tampilkan widget selectbox untuk memilih ketersediaan stok
-    availability_options = df['STOCK AVAILABILITY'].unique().tolist()
+    availability_options = ['All'] + df['STOCK AVAILABILITY'].unique().tolist()
     selected_availability = st.selectbox('Select Stock Availability:', availability_options)
 
     # Filter data berdasarkan ketersediaan stok yang dipilih
-    filtered_df = df[df['STOCK AVAILABILITY'] == selected_availability]
+    if selected_availability != 'All':
+        filtered_df = df[df['STOCK AVAILABILITY'] == selected_availability]
+    else:
+        filtered_df = df
 
     if not filtered_df.empty:
         # Tampilkan histogram dari kolom 'PRICE' berdasarkan ketersediaan stok yang dipilih
@@ -99,6 +102,9 @@ def main():
         # Tampilkan gambar histogram di Streamlit
         st.image(buffer, use_column_width=True)
 
+        # Tampilkan informasi jumlah buku yang tersedia
+        st.info(f"Total books available with selected stock availability: {len(filtered_df)}")
+
     else:
         st.warning("No books available with selected stock availability.")
 
@@ -113,4 +119,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

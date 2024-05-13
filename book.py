@@ -65,9 +65,11 @@ def main():
     # Scrape data from multiple pages
     try:
         scraped_data = asyncio.run(scrape_multiple_pages(n_pages))
+        st.write(scraped_data)  # Add this line to inspect the scraped data
     except Exception as e:
         st.error(f"An error occurred while scraping: {e}")
         return
+
 
     # Convert scraped data to DataFrame
     titles, prices, stocks_availability, urls = zip(*scraped_data)

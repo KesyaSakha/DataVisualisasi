@@ -67,7 +67,7 @@ def scrape_multiple_pages(n):
         'URL': urls
     }
     return pd.DataFrame(book_dict)
-
+    
 # Aplikasi Streamlit
 def main():
     st.title('Book Data Analysis')
@@ -75,21 +75,32 @@ def main():
     # Scraping data dari multiple pages
     df = scrape_multiple_pages(5)
 
-    # Tampilkan histogram dari kolom 'PRICE'
-    df['PRICE'] = df['PRICE'].str.replace('£', '').astype(float) # Mengubah harga menjadi tipe data numerik
-    fig, ax = plt.subplots()
-    ax.hist(df['PRICE'], bins=20, color='skyblue', edgecolor='black')
-    ax.set_xlabel('Price (£)')
-    ax.set_ylabel('Frequency')
-    ax.set_title('Distribution of Book Prices')
-    
-    # Simpan gambar histogram sebagai BytesIO
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
+    # Tampilkan widget selectbox untuk memilih ketersediaan stok
+    availability_options = df['STOCK AVAILABILITY'].unique().tolist()
+    selected_availability = st.selectbox('Select Stock Availability:', availability_options)
 
-    # Tampilkan gambar histogram di Streamlit
-    st.image(buffer)
+    # Filter data berdasarkan ketersediaan stok yang dipilih
+    filtered_df = df[df['STOCK AVAILABILITY'] == selected_availability]
+
+    if not filtered_df.empty:
+        # Tampilkan histogram dari kolom 'PRICE' berdasarkan ketersediaan stok yang dipilih
+        filtered_df['PRICE'] = filtered_df['PRICE'].str.replace('£', '').astype(float) # Mengubah harga menjadi tipe data numerik
+        fig, ax = plt.subplots()
+        ax.hist(filtered_df['PRICE'], bins=20, color='skyblue', edgecolor='black')
+        ax.set_xlabel('Price (£)')
+        ax.set_ylabel('Frequency')
+        ax.set_title(f'Distribution of Book Prices for {selected_availability} Stock Availability')
+
+        # Simpan gambar histogram sebagai BytesIO
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+
+        # Tampilkan gambar histogram di Streamlit
+        st.image(buffer)
+
+    else:
+        st.warning("No books available with selected stock availability.")
 
     # Tampilkan histogram dari kolom 'STOCK AVAILABILITY'
     st.subheader('Distribution of Stock Availability')
@@ -102,3 +113,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

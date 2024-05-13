@@ -1,15 +1,39 @@
+import streamlit as st
 from gtts import gTTS
-import subprocess
+from playsound import playsound
+from googletrans import Translator
 
-# Teks yang akan diterjemahkan dan diubah menjadi suara
-text = "This company was founded in 2010 by the infamous movie star, \
-          Graeme Alexander. Currently, the company worths USD 1 billion \
-          according to Forbes report in 2023. What an achievement in just \
-          13 years."
+# Fungsi untuk membaca teks dalam bahasa Inggris
+def read_english(text):
+    english_tts = gTTS(text=text, lang='en')
+    english_tts.save("english.mp3")
+    playsound("english.mp3")
 
-# Terjemahkan teks ke bahasa Indonesia
-translator = gTTS(text=text, lang='en')
-translator.save("translation.mp3")
+# Fungsi untuk membaca teks dalam bahasa Indonesia
+def read_indonesian(text):
+    indonesian_tts = gTTS(text=text, lang='id')
+    indonesian_tts.save("indonesian.mp3")
+    playsound("indonesian.mp3")
 
-# Putar terjemahan
-subprocess.Popen(["mpv", "translation.mp3"])
+# Fungsi untuk menerjemahkan teks dari bahasa Inggris ke bahasa Indonesia
+def translate_to_indonesian(text):
+    translator = Translator()
+    translated_text = translator.translate(text, dest='id').text
+    return translated_text
+
+# Konten Streamlit
+st.title("Text-to-Speech Translator")
+
+english_text = "This company was founded in 2010 by the infamous movie star, Graeme Alexander. Currently, the company worths USD 1 billion according to Forbes report in 2023. What an achievement in just 13 years."
+
+translated_text = translate_to_indonesian(english_text)
+
+st.header("English Text")
+st.write(english_text)
+if st.button("Read English"):
+    read_english(english_text)
+
+st.header("Indonesian Translation")
+st.write(translated_text)
+if st.button("Read Indonesian"):
+    read_indonesian(translated_text)

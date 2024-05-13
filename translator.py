@@ -1,5 +1,5 @@
 from gtts import gTTS
-import os
+import subprocess
 
 # Teks yang akan diterjemahkan dan diubah menjadi suara
 text = "This company was founded in 2010 by the infamous movie star, \
@@ -12,4 +12,4 @@ translator = gTTS(text=text, lang='en')
 translator.save("translation.mp3")
 
 # Putar terjemahan
-os.system("mpv translation.mp3")
+subprocess.Popen(["mpv", "translation.mp3"])

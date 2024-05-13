@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import requests
 from bs4 import BeautifulSoup
 import io
+import asyncio
 
 # Function to get document from URL
 def get_doc(url):

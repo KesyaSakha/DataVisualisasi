@@ -4,3 +4,5 @@ seaborn
 streamlit
 beautifulsoup4
 requests
+io
+asyncio

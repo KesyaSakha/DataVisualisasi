@@ -70,7 +70,13 @@ def main():
         st.error(f"An error occurred while scraping: {e}")
         return
 
-
+    # Convert scraped data to DataFrame
+    try:
+        titles, prices, stocks_availability, urls = zip(*scraped_data)
+    except Exception as e:
+        st.error(f"Error in zipping scraped data: {e}")
+        return
+        
     # Convert scraped data to DataFrame
     titles, prices, stocks_availability, urls = zip(*scraped_data)
     df = pd.DataFrame({

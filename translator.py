@@ -1,28 +1,15 @@
-import streamlit as st
 from gtts import gTTS
 import os
 
-# Function to speak text
-def speak(text, lang='en'):
-    tts = gTTS(text=text, lang=lang)
-    tts.save("output.mp3")
-    os.system("ffplay -nodisp -autoexit output.mp3")
+# Teks yang akan diterjemahkan dan diubah menjadi suara
+text = "This company was founded in 2010 by the infamous movie star, \
+          Graeme Alexander. Currently, the company worths USD 1 billion \
+          according to Forbes report in 2023. What an achievement in just \
+          13 years."
 
-# Main function
-def main():
-    st.title("Text-to-Speech with Streamlit")
+# Terjemahkan teks ke bahasa Indonesia
+translator = gTTS(text=text, lang='en')
+translation = translator.get_urls(lang='id')[0]
 
-    # Text input
-    text = st.text_area("Enter text", "Type here...")
-
-    # Language selection
-    language = st.radio("Select language", ["English", "Indonesian"])
-
-    # Text-to-Speech button
-    if st.button("Listen"):
-        if text:
-            lang_code = "en" if language == "English" else "id"
-            speak(text, lang_code)
-
-if __name__ == "__main__":
-    main()
+# Putar terjemahan
+os.system("mpv " + translation)

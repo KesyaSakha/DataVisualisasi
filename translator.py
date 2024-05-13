@@ -1,27 +1,45 @@
+import streamlit as st
+import pyttsx3
 import time
-from gtts import gTTS
-import os
-
-# Teks yang akan diterjemahkan dan diubah menjadi suara
-text = "This company was founded in 2010 by the infamous movie star, \
-          Graeme Alexander. Currently, the company worths USD 1 billion \
-          according to Forbes report in 2023. What an achievement in just \
-          13 years."
-
-# Import library untuk terjemahan
 import translators as ts
 
-# Terjemahkan teks ke bahasa Indonesia
-hasil = ts.translate(text, to_language="id")
+# Initialize Text-to-Speech engine
+engine = pyttsx3.init()
 
-# Print terjemahan
-print(hasil)
+# Function to get available voices
+def get_indonesian_voice():
+    voices = engine.getProperty('voices')
+    for voice in voices:
+        if "indonesia" in voice.name.lower():
+            return voice.id
+    return None
 
-# Inisialisasi mesin Text-to-Speech untuk bahasa Indonesia
-engine = gTTS(text=hasil, lang='id', slow=False)
+# Function to speak text
+def speak(text, lang='en'):
+    engine.setProperty('voice', get_indonesian_voice() if lang == 'id' else None)
+    engine.say(text)
+    engine.runAndWait()
 
-# Simpan terjemahan dalam format audio
-engine.save("hasil_terjemahan.mp3")
+# Main function
+def main():
+    st.title("Text Translator & Text-to-Speech")
 
-# Putar terjemahan
-os.system("start hasil_terjemahan.mp3")
+    # Text input
+    text = st.text_area("Enter text in English")
+
+    # Translate button
+    if st.button("Translate to Indonesian"):
+        if text:
+            st.write("Translation in Indonesian:")
+            translation = ts.translate(text, to_language="id")
+            st.write(translation)
+            speak("Translation in Indonesian:", 'en')
+            speak(translation, 'id')
+
+    # Text-to-Speech button
+    if st.button("Listen to English Text"):
+        if text:
+            speak(text)
+
+if __name__ == "__main__":
+    main()

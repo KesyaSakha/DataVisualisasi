@@ -5,3 +5,4 @@ streamlit
 translators
 gtts
 pygame
+pyttsx3

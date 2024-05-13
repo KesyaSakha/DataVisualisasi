@@ -9,4 +9,3 @@ pyttsx3
 playsound
 googletrans==4.0.0-rc1
 pydub
-webbrowser

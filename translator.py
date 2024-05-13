@@ -9,9 +9,12 @@ import os
 def read_english(text):
     english_tts = gTTS(text=text, lang='en')
     english_tts.save("english.mp3")
-    sound = AudioSegment.from_mp3("english.mp3")
-    play(sound)
-
+    if os.path.exists("english.mp3"):
+        sound = AudioSegment.from_mp3("english.mp3")
+        play(sound)
+    else:
+        st.error("Error: English audio file not found.")
+        
 # Fungsi untuk membaca teks dalam bahasa Indonesia
 def read_indonesian(text):
     indonesian_tts = gTTS(text=text, lang='id')

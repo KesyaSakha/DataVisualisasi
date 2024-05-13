@@ -1,8 +1,7 @@
 import streamlit as st
 from gtts import gTTS
 from pydub import AudioSegment
-# Import webbrowser for playing audio in a new browser tab
-import webbrowser
+from playsound import playsound
 from googletrans import Translator
 import os
 
@@ -12,8 +11,7 @@ def read_english(text):
   english_tts.save("english.mp3")
   if os.path.exists("english.mp3"):
     st.success("English audio file successfully created.")
-    # Play audio using webbrowser to bypass Streamlit limitations
-    webbrowser.open("english.mp3")  
+    playsound("english.mp3")  # Play the audio using playsound
   else:
     st.error("Error: Failed to create English audio file.")
 
@@ -21,8 +19,7 @@ def read_english(text):
 def read_indonesian(text):
   indonesian_tts = gTTS(text=text, lang='id')
   indonesian_tts.save("indonesian.mp3")
-  # Play audio using webbrowser to bypass Streamlit limitations
-  webbrowser.open("indonesian.mp3")  
+  playsound("indonesian.mp3")  # Play the audio using playsound
 
 # Fungsi untuk menerjemahkan teks dari bahasa Inggris ke bahasa Indonesia
 def translate_to_indonesian(text):

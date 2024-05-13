@@ -9,7 +9,7 @@ text = "This company was founded in 2010 by the infamous movie star, \
 
 # Terjemahkan teks ke bahasa Indonesia
 translator = gTTS(text=text, lang='en')
-translation = translator.get_urls(lang='id')[0]
+translator.save("translation.mp3")
 
 # Putar terjemahan
-os.system("mpv " + translation)
+os.system("mpv translation.mp3")

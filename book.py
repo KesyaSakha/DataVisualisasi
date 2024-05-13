@@ -97,7 +97,7 @@ def main():
         buffer.seek(0)
 
         # Tampilkan gambar histogram di Streamlit
-        st.image(buffer)
+        st.image(buffer, use_column_width=True)
 
     else:
         st.warning("No books available with selected stock availability.")

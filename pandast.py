@@ -4,6 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 from sqlalchemy import create_engine
+
 # Database connection
 dialect = "mysql"
 driver = "pymysql"
@@ -171,7 +172,6 @@ df['Name'] = df['Name'].astype("string")
 df['Year'] = pd.to_numeric(df['Year'])
 # df['Year']
 
-
 # 1. COMPARISON CHART - BAR CHART
 # Raw Data Preparation
 # Take 3 columns from panda dataframe, sorted by Rating
@@ -203,14 +203,8 @@ df_sel2 = df[['Gross_US','Gross_World','Durasi(Menit)','Budget','Rating']].sort_
 
 # Drop rows with all zeros
 hsl = df_sel2.loc[(df_sel2[['Gross_US', 'Gross_World']] != 0).all(axis=1)]
-hsl
-# df_sel
 
 # Scale down the numbers in 3 columns, dividing it by 1 million
-# df_sel2['Gross_US'] = df_sel2['Gross_US']/1000000
-# df_sel2['Gross_World'] = df_sel2['Gross_World']/1000000
-# df_sel2['Budget'] = df_sel2['Budget']/1000000
-
 hsl['Gross_US'] = hsl['Gross_US']/1000000
 hsl['Gross_World'] = hsl['Gross_World']/1000000
 hsl['Budget'] = hsl['Budget']/1000000
@@ -228,23 +222,16 @@ st.scatter_chart(
     # color = ['Rating']
 )
 
-
 # 3. COMPOSITION CHART - DONUT CHART
 # Raw Data Preparation
 # Take 4 columns from panda dataframe, sorted by Rating
 st.write("3. COMPOSITION CHART - DONUT CHART")
-
 df_sel3 = df[['Gross_US','Gross_World','Budget','Rating']].sort_values(by=['Rating'])
 
 # Drop rows with all zeros
 hsl = df_sel3.loc[(df_sel3[['Gross_US', 'Gross_World']] != 0).all(axis=1)]
-# df_sel
 hsl = hsl.groupby(['Rating']).sum()
-hsl
 
- 
-label = df_sel3.Rating.unique()
-# label
 # Creating plot
 fig = plt.figure(figsize=(10, 7))
 explode = [0,0.1,0,0.1]
@@ -255,11 +242,8 @@ plt.axis('equal')
 # show plot
 st.pyplot(fig)
 
-
 # 4. DISTRIBUTION - LINE CHART
-
-
-chart_data2
+st.write("4. DISTRIBUTION - LINE CHART")
 st.line_chart(
     chart_data2, 
     x='Durasi(Menit)',
@@ -267,22 +251,3 @@ st.line_chart(
     color=['#FF0000', '#0000FF'],  # Optional
     # color = ['Rating']
 )
-
-
-
-# labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
-# sizes = [15, 30, 45, 10]
-# explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-
-# fig1, ax1 = plt.subplots()
-# ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
-#         shadow=True, startangle=90)
-# ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
-
-# plt.show()
-
-
-# st.bar_chart(df_sel)
-# df_sorted
-# sorting

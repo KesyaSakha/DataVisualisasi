@@ -5,19 +5,24 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 from sqlalchemy import create_engine
 
-# Database connection
-dialect = "mysql"
-driver = "pymysql"
-username = "root"
-password = ""
-host = "localhost"
-port = "3306"
-database = "aw"
+# Database connection configuration
+config = {
+  'user': 'root',
+  'password': '',
+  'host': 'localhost',
+  'port': '3306',
+  'database': 'aw'
+}
 
-# Connection string
-connection_string = f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}"
-engine = create_engine(connection_string)
-
+# Connect to the database
+try:
+    connection = mysql.connector.connect(**config)
+    if connection.is_connected():
+        db_Info = connection.get_server_info()
+        print("Connected to MySQL Server version ", db_Info)
+        cursor = connection.cursor()
+except Error as e:
+    print("Error while connecting to MySQL", e)
 # Query untuk mengambil data penjualan produk
 query = """
     SELECT DISTINCT dp.EnglishProductName, SUM(fs.SalesAmount) AS TotalSales

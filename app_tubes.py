@@ -3,17 +3,21 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import mysql.connector
-
-# Membuat koneksi ke database
-db_connection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="aw"
-)
+import toml
+# Read database connection info from secrets.toml
+secrets = toml.load('secrets.toml')
+db_config = secrets['connections']['mysql']
 
 # Function to execute MySQL query
 def execute_query_mysql(query):
+    # Membuat koneksi ke database
+    db_connection = mysql.connector.connect(
+        host=db_config['host'],
+        user=db_config['username'],
+        password=db_config['password'],
+        database=db_config['database']
+    )
+
     # Creating a cursor object
     cursor = db_connection.cursor()
 
@@ -25,6 +29,9 @@ def execute_query_mysql(query):
 
     # Closing the cursor
     cursor.close()
+
+    # Closing the connection
+    db_connection.close()
 
     return result
 

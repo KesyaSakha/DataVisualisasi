@@ -162,6 +162,11 @@ def main():
 
     st.subheader('Distribution of Product List Prices (Histogram)')
     histogram(data_df, 'ListPrice', 20, 'Distribution of Product List Prices', 'List Price', 'Frequency')
+    st.subheader('Kernel Density Estimate of Product List Prices (KDE Plot)')
+    kde_plot(data_df, 'ListPrice', True, 'purple', 'Kernel Density Estimate of Product List Prices', 'List Price', 'Density')
+
+if __name__ == "__main__":
+    main()
 
     import streamlit as st
 import pandas as pd
@@ -299,8 +304,4 @@ st.line_chart(
 # df_sorted
 # sorting
 
-    st.subheader('Kernel Density Estimate of Product List Prices (KDE Plot)')
-    kde_plot(data_df, 'ListPrice', True, 'purple', 'Kernel Density Estimate of Product List Prices', 'List Price', 'Density')
-
-if __name__ == "__main__":
-    main()
+    

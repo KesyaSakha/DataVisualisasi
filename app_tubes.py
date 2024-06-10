@@ -11,29 +11,30 @@ import matplotlib.pyplot as plt
 import mysql.connector
 from mysql.connector import Error
 
+
+# Load database connection info from secrets.toml
+secrets = toml.load('secrets.toml')
+db_config = secrets['connections']['mydb']
+
 # Function to execute MySQL query
 def execute_query_mysql(query):
     try:
-        db_connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='aw'
+        db_connection = pymysql.connect(
+            host=db_config['host'],
+            user=db_config['username'],
+            password=db_config['password'],
+            database=db_config['database'],
+            port=int(db_config['port'])
         )
-        if db_connection.is_connected():
-            cursor = db_connection.cursor()
-            cursor.execute(query)
-            result = cursor.fetchall()
-            cursor.close()
-            db_connection.close()
-            return result
-        else:
-            st.error("Failed to connect to the database.")
-            return None
+        cursor = db_connection.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        db_connection.close()
+        return result
     except Error as e:
         st.error(f"Error while connecting to MySQL: {e}")
         return None
-
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):
     fig, ax = plt.subplots(figsize=(10, 6))

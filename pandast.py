@@ -2,6 +2,159 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
+import seaborn as sns
+from sqlalchemy import create_engine
+# Database connection
+dialect = "mysql"
+driver = "pymysql"
+username = "root"
+password = ""
+host = "localhost"
+port = "3306"
+database = "aw"
+
+# Connection string
+connection_string = f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}"
+engine = create_engine(connection_string)
+
+# Query untuk mengambil data penjualan produk
+query = """
+    SELECT DISTINCT dp.EnglishProductName, SUM(fs.SalesAmount) AS TotalSales
+    FROM factinternetsales AS fs
+    INNER JOIN dimproduct AS dp ON fs.ProductKey = dp.ProductKey
+    GROUP BY dp.EnglishProductName
+    ORDER BY TotalSales DESC
+    LIMIT 10
+"""
+
+# Baca data ke dalam DataFrame dengan Pandas
+sales_df = pd.read_sql_query(query, engine)
+
+# Definisikan palet warna kustom sebagai daftar string
+custom_palette = ['pink', 'purple', 'skyblue', 'lightblue', 'lavender', 'thistle', 'lightpink', 'lightgreen', 'lightskyblue', 'violet']
+
+# Atur palet warna kustom
+sns.set_palette(custom_palette)
+
+# Visualisasi 1: Bar Chart (Horizontal)
+plt.figure(figsize=(10, 6))
+plt.barh(sales_df['EnglishProductName'], sales_df['TotalSales'])
+plt.xlabel('Total Sales')
+plt.ylabel('Product Name')
+plt.title('Top 10 Products by Total Sales (Bar Chart)')
+plt.tight_layout()
+plt.show()
+
+# Visualisasi 2: Pie Chart
+plt.figure(figsize=(8, 8))
+plt.pie(sales_df['TotalSales'], labels=sales_df['EnglishProductName'], autopct='%1.1f%%', startangle=140)
+plt.axis('equal')  # Memastikan pie chart berbentuk lingkaran
+plt.title('Top 10 Products by Total Sales (Pie Chart)')
+plt.tight_layout()
+plt.show()
+
+# Connection string
+connection_string = f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}"
+engine = create_engine(connection_string)
+
+# Query untuk mengambil data StandardCost dan ListPrice
+query = """
+    SELECT StandardCost, ListPrice
+    FROM dimproduct
+"""
+
+# Baca data ke dalam DataFrame
+product_df = pd.read_sql_query(query, engine)
+
+# Atur palet warna kustom
+custom_palette = ['pink', 'purple', 'skyblue', 'lightblue', 'lavender', 'thistle', 'lightpink', 'lightcoral', 'lightskyblue', 'violet']
+sns.set_palette(custom_palette)
+
+# Visualisasi: Scatter Plot dengan Garis Regresi
+plt.figure(figsize=(10, 6))
+sns.regplot(x='StandardCost', y='ListPrice', data=product_df, scatter_kws={'color': 'skyblue'}, line_kws={'color': 'red'})
+plt.title('Relationship between Standard Cost and List Price')
+plt.xlabel('Standard Cost')
+plt.ylabel('List Price')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Visualisasi: Pair Plot untuk eksplorasi hubungan antara variabel
+sns.pairplot(product_df)
+plt.title('Pair Plot of Product Variables')
+plt.tight_layout()
+plt.show()
+
+
+# Query untuk mengambil data komposisi produk berdasarkan ProductLine
+query = """
+    SELECT ProductLine, COUNT(*) AS TotalProducts
+    FROM dimproduct
+    GROUP BY ProductLine
+"""
+
+# Baca data ke dalam DataFrame
+product_line_df = pd.read_sql_query(query, engine)
+
+# Visualisasi: Bar Chart
+plt.figure(figsize=(10, 6))
+plt.bar(product_line_df['ProductLine'], product_line_df['TotalProducts'], color='lightpink')
+plt.title('Composition of Products by Product Line')
+plt.xlabel('Product Line')
+plt.ylabel('Total Products')
+plt.xticks(rotation=45)
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+# Query untuk mengambil data komposisi produk berdasarkan warna (Color)
+query_color = """
+    SELECT Color, COUNT(*) AS TotalProducts
+    FROM dimproduct
+    GROUP BY Color
+"""
+
+# Baca data ke dalam DataFrame
+color_df = pd.read_sql_query(query_color, engine)
+
+# Visualisasi: Pie Chart
+plt.figure(figsize=(8, 8))
+plt.pie(color_df['TotalProducts'], labels=color_df['Color'], autopct='%1.1f%%', startangle=140, colors=['pink', 'purple', 'skyblue', 'lightblue', 'lavender', 'thistle', 'lightpink', 'lightcoral', 'lightskyblue', 'violet'])
+plt.axis('equal')  # Memastikan pie chart berbentuk lingkaran
+plt.title('Composition of Products by Color')
+plt.tight_layout()
+plt.show()
+
+# Query untuk mengambil data yang akan divisualisasikan
+query = """
+    SELECT ListPrice
+    FROM dimproduct
+    WHERE ListPrice IS NOT NULL
+"""
+
+# Baca data ke dalam DataFrame dengan Pandas
+data_df = pd.read_sql_query(query, engine)
+
+# Visualisasi: Histogram
+plt.figure(figsize=(10, 6))
+plt.hist(data_df['ListPrice'], bins=20, color='pink', edgecolor='black')
+plt.xlabel('List Price')
+plt.ylabel('Frequency')
+plt.title('Distribution of Product List Prices')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Visualisasi: KDE Plot
+plt.figure(figsize=(10, 6))
+sns.kdeplot(list_price_df['ListPrice'], fill=True, color='purple')
+plt.xlabel('List Price')
+plt.ylabel('Density')
+plt.title('Kernel Density Estimate of Product List Prices')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
 
 # Read CSV files into dataframes
 df = pd.read_csv('imdb_combined_data2.csv')

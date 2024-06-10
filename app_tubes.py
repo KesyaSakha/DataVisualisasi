@@ -4,18 +4,27 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import mysql.connector
 import toml
+import streamlit as st
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import mysql.connector
+
 # Function to execute MySQL query
 def execute_query_mysql(query):
     # Connection parameters
-    db_config = {
-        'host': 'localhost',
-        'username': 'root',
-        'password': '',
-        'database': 'aw'
-    }
+    host = 'localhost'
+    username = 'root'
+    password = ''
+    database = 'aw'
 
     # Establishing connection
-    db_connection = mysql.connector.connect(**db_config)
+    db_connection = mysql.connector.connect(
+        host=host,
+        user=username,
+        password=password,
+        database=database
+    )
 
     # Creating a cursor object
     cursor = db_connection.cursor()
@@ -33,7 +42,6 @@ def execute_query_mysql(query):
     db_connection.close()
 
     return result
-
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):
     fig, ax = plt.subplots(figsize=(10, 6))

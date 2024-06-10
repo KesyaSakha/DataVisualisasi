@@ -9,8 +9,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import mysql.connector
+import pymysql
 from mysql.connector import Error
-
+from pymysql import Error
 
 # Load database connection info from secrets.toml
 secrets = toml.load('secrets.toml')

@@ -21,8 +21,9 @@ try:
         db_Info = connection.get_server_info()
         print("Connected to MySQL Server version ", db_Info)
         cursor = connection.cursor()
-except Error as e:
-    print("Error while connecting to MySQL", e)
+    # ...
+except Exception as e:
+    st.error(f"An error occurred: {e}")
 # Query untuk mengambil data penjualan produk
 query = """
     SELECT DISTINCT dp.EnglishProductName, SUM(fs.SalesAmount) AS TotalSales

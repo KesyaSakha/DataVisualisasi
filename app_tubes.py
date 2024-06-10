@@ -9,39 +9,32 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import mysql.connector
+from mysql.connector import Error
 
-# Function to execute MySQL query
-def execute_query_mysql(query):
-    # Connection parameters
-    host = 'localhost'
-    username = 'root'
-    password = ''
-    database = 'aw'
-
-    # Establishing connection
-    db_connection = mysql.connector.connect(
-        host=host,
-        user=username,
-        password=password,
-        database=database
+try:
+    connection = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='',
+        database='aw'
     )
 
-    # Creating a cursor object
-    cursor = db_connection.cursor()
+    if connection.is_connected():
+        db_info = connection.get_server_info()
+        print("Connected to MySQL Server version ", db_info)
+        cursor = connection.cursor()
+        cursor.execute("select database();")
+        record = cursor.fetchone()
+        print("You're connected to database: ", record)
 
-    # Executing the query
-    cursor.execute(query)
+except Error as e:
+    print("Error while connecting to MySQL", e)
+finally:
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+        print("MySQL connection is closed")
 
-    # Fetching the results
-    result = cursor.fetchall()
-
-    # Closing the cursor
-    cursor.close()
-
-    # Closing the connection
-    db_connection.close()
-
-    return result
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):
     fig, ax = plt.subplots(figsize=(10, 6))

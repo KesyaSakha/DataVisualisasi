@@ -1,22 +1,18 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import seaborn as sns
 from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
-import pymysql
 
-# Database connection
-dialect = "mysql"
-driver = "pymysql"  # sesuaikan driver dengan modul yang diimpor
+# Database connection details
 username = "root"
 password = ""
 host = "localhost"
-port = "3306"
+port = 3306
 database = "aw"
 
 # Connection string
-connection_string = f"{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}"
+connection_string = f"mysql+pymysql://{username}:{password}@{host}:{port}/{database}"
 engine = create_engine(connection_string)
 
 # Function to execute SQL queries

@@ -4,19 +4,18 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import mysql.connector
 import toml
-# Read database connection info from secrets.toml
-secrets = toml.load('secrets.toml')
-db_config = secrets['connections']['mysql']
-
 # Function to execute MySQL query
 def execute_query_mysql(query):
-    # Membuat koneksi ke database
-    db_connection = mysql.connector.connect(
-        host=db_config['host'],
-        user=db_config['username'],
-        password=db_config['password'],
-        database=db_config['database']
-    )
+    # Connection parameters
+    db_config = {
+        'host': 'localhost',
+        'username': 'root',
+        'password': '',
+        'database': 'aw'
+    }
+
+    # Establishing connection
+    db_connection = mysql.connector.connect(**db_config)
 
     # Creating a cursor object
     cursor = db_connection.cursor()

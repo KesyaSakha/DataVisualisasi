@@ -175,7 +175,7 @@ import seaborn as sns
 import streamlit as st
 
 # Load the CSV file
-df = pd.read_csv('/mnt/data/your_csv_file.csv')
+df = pd.read_csv('scraping - top picks.csv')
 
 # Convert necessary columns to appropriate data types
 df['IMDb Rating'] = df['IMDb Rating'].astype("float")

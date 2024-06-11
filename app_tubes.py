@@ -170,19 +170,17 @@ if __name__ == "__main__":
 
 
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
 # Load the CSV file
-df = pd.read_csv('scraping - top picks.csv')
+df = pd.read_csv('/mnt/data/your_csv_file.csv')
 
 # Convert necessary columns to appropriate data types
-df['Rating'] = df['Rating'].astype("string")
-df['Name'] = df['Name'].astype("string")
-df['Year'] = pd.to_numeric(df['Year'])
 df['IMDb Rating'] = df['IMDb Rating'].astype("float")
+df['Title'] = df['Title'].astype("string")
+df['Year'] = pd.to_numeric(df['Year'])
 df['Runtime (mins)'] = pd.to_numeric(df['Runtime (mins)'])
 
 # 1. COMPARISON CHART - BAR CHART
@@ -193,7 +191,7 @@ df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.barplot(data=df_sel, x='Title', y='IMDb Rating', palette='viridis', ax=ax)
 plt.xticks(rotation=90)
-plt.title("Top 10 Comparison Chart - Bar Chart")
+plt.title("Top 40 Comparison Chart - Bar Chart")
 st.pyplot(fig)
 
 # 2. RELATIONSHIP CHART - SCATTER PLOT

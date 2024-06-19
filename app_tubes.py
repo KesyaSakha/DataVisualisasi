@@ -198,7 +198,7 @@ def main():
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
-        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')  # Adjust legend position
+        ax.legend(bbox_to_anchor=(1, 1), loc='upper left')  # Adjust legend position
         plt.title("Relationship Chart - Scatter Plot")
         st.pyplot(fig)
 

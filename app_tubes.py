@@ -193,7 +193,7 @@ def main():
         st.pyplot(fig)
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
-        df_sel2 = df.sort_values(by=['IMDb Rating'], ascending=False).head(40)[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
+        df_sel2 = df.sort_values(by=['IMDb Rating'], ascending=False).head(30)[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
         st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))

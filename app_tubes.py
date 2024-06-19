@@ -202,7 +202,7 @@ def main():
         df_top_ratings = df[df['IMDb Rating'] == 10].copy()
         df_sel2 = df_top_ratings.sort_values(by='Runtime (mins)')
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
-                st.write("### Data Table")
+               st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
@@ -239,8 +239,5 @@ def main():
         plt.title("Distribution - Line Chart (Movies Released Each Year)")
         st.pyplot(fig)
         plt.close(fig)  # Close the figure to prevent overlapping plots
-
 if __name__ == "__main__":
     main()
-
-       

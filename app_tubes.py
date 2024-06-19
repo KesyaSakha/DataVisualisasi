@@ -32,6 +32,8 @@ def execute_query_mysql(query):
 
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):
+    st.write("### Data Table")
+    st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.barh(data[x], data[y])
     ax.set_xlabel(xlabel)
@@ -42,6 +44,8 @@ def bar_chart(data, x, y, title, xlabel, ylabel):
 
 # Function to display pie chart
 def pie_chart(data, labels, values, title):
+    st.write("### Data Table")
+    st.dataframe(data)
     fig, ax = plt.subplots(figsize=(8, 8))
     ax.pie(data[values], labels=data[labels], autopct='%1.1f%%', startangle=140)
     ax.axis('equal')
@@ -51,6 +55,8 @@ def pie_chart(data, labels, values, title):
 
 # Function to display scatter plot
 def scatter_plot(data, x, y, title, xlabel, ylabel):
+    st.write("### Data Table")
+    st.dataframe(data)
     data[x] = data[x].astype(float)
     data[y] = data[y].astype(float)
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -64,6 +70,8 @@ def scatter_plot(data, x, y, title, xlabel, ylabel):
 
 # Function to display bubble plot
 def bubble_plot(data, x, y, title, xlabel, ylabel):
+    st.write("### Data Table")
+    st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.scatter(data[x], data[y], alpha=0.5)
     ax.set_title(title)
@@ -74,6 +82,8 @@ def bubble_plot(data, x, y, title, xlabel, ylabel):
 
 # Function to display histogram
 def histogram(data, column, bins, title, xlabel, ylabel):
+    st.write("### Data Table")
+    st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.hist(data[column], bins=bins, color='pink', edgecolor='black')
     ax.set_xlabel(xlabel)
@@ -85,6 +95,8 @@ def histogram(data, column, bins, title, xlabel, ylabel):
 
 # Function to display KDE plot
 def kde_plot(data, column, fill, color, title, xlabel, ylabel):
+    st.write("### Data Table")
+    st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.kdeplot(data[column], fill=fill, color=color, ax=ax)
     ax.set_xlabel(xlabel)
@@ -169,6 +181,8 @@ def main():
 
         st.write("1. COMPARISON CHART - BAR CHART")
         df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
+        st.write("### Data Table")
+        st.dataframe(df_sel)
         fig, ax = plt.subplots(figsize=(12, 6))
         sns.barplot(data=df_sel, x='Title', y='IMDb Rating', palette='viridis', ax=ax)
         plt.xticks(rotation=90)
@@ -177,6 +191,8 @@ def main():
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
         df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
+        st.write("### Data Table")
+        st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette='viridis', s=100, ax=ax)
         plt.title("Relationship Chart - Scatter Plot")
@@ -187,6 +203,8 @@ def main():
         genre_counts = genres.value_counts().reset_index()
         genre_counts.columns = ['Genre', 'Count']
         top_10_genres = genre_counts.head(10)
+        st.write("### Data Table")
+        st.dataframe(top_10_genres)
         fig, ax = plt.subplots(figsize=(10, 7))
         wedges, texts, autotexts = ax.pie(top_10_genres['Count'], labels=top_10_genres['Genre'], autopct='%1.1f%%', startangle=90, pctdistance=0.85, wedgeprops=dict(width=0.3))
         plt.setp(autotexts, size=10, weight="bold", color="white")
@@ -200,6 +218,8 @@ def main():
         st.write("4. DISTRIBUTION - LINE CHART (Movies Released Each Year)")
         df_sel4 = df['Year'].value_counts().sort_index().reset_index()
         df_sel4.columns = ['Year', 'Number of Movies']
+        st.write("### Data Table")
+        st.dataframe(df_sel4)
         fig, ax = plt.subplots(figsize=(12, 6))
         sns.lineplot(data=df_sel4, x='Year', y='Number of Movies', marker='o', ax=ax)
         plt.title("Distribution - Line Chart (Movies Released Each Year)")

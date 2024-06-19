@@ -121,11 +121,17 @@ def main():
             LIMIT 10
         """
         sales_df = pd.DataFrame(execute_query_mysql(sales_query), columns=['EnglishProductName', 'TotalSales'])
-        st.subheader('Top 10 Products by Total Sales (Bar Chart)')
-        bar_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Bar Chart)', 'Total Sales', 'Product Name')
 
-        st.subheader('Top 10 Products by Total Sales (Pie Chart)')
-        pie_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Pie Chart)')
+        # Columns layout for bar and pie charts
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader('Top 10 Products by Total Sales (Bar Chart)')
+            bar_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Bar Chart)', 'Total Sales', 'Product Name')
+
+        with col2:
+            st.subheader('Top 10 Products by Total Sales (Pie Chart)')
+            pie_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Pie Chart)')
 
         # Query to retrieve StandardCost and ListPrice data
         product_query = """

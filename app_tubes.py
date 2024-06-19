@@ -193,13 +193,21 @@ def main():
         st.pyplot(fig)
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
-        df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
-        st.write("### Data Table")
-        st.dataframe(df_sel2)
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
-        plt.title("Relationship Chart - Scatter Plot")
-        st.pyplot(fig)
+    
+
+df_top_ratings = df[df['IMDb Rating'] == 10]
+df_sel2 = df_top_ratings.sort_values(by='Runtime (mins)')
+st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
+st.write("### Data Table")
+st.dataframe(df_sel2)
+fig, ax = plt.subplots(figsize=(10, 6))
+pastel_colors = sns.color_palette("pastel")  # Define your palette if not defined elsewhere
+sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
+plt.title("Relationship Chart - Scatter Plot")
+plt.tight_layout()
+st.pyplot(fig)
+
+
 
         st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")
         genres = df['Genres'].str.split(',').explode().str.strip()

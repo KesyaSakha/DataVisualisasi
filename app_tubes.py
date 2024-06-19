@@ -193,14 +193,21 @@ def main():
         st.pyplot(fig)
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
-        df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
-        st.write("### Data Table")
-        st.dataframe(df_sel2)
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
-        plt.title("Relationship Chart - Scatter Plot")
-        st.pyplot(fig)
+         st.title('Top 10 IMDb Movies - Relationship Visualization')
 
+        # Selecting top 10 movies by IMDb Rating
+        df_top10 = df.nlargest(10, 'IMDb Rating')
+    
+        # Visualizing relationship between Runtime and IMDb Rating
+        st.write("Relationship between Runtime (mins) and IMDb Rating")
+        st.dataframe(df_top10[['Title', 'IMDb Rating', 'Runtime (mins)']])
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.scatterplot(data=df_top10, x='Runtime (mins)', y='IMDb Rating', hue='Title', palette='pastel', s=100, legend='brief', ax=ax)
+        ax.set_xlabel('Runtime (mins)')
+        ax.set_ylabel('IMDb Rating')
+        ax.set_title('Top 10 IMDb Movies - Relationship between Runtime and IMDb Rating')
+        st.pyplot(fig)
+        
         st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")
         genres = df['Genres'].str.split(',').explode().str.strip()
         genre_counts = genres.value_counts().reset_index()

@@ -182,9 +182,6 @@ def main():
     elif dataset == 'IMDb':
         df = load_imdb_data()
 
-        elif dataset == 'IMDb':
-        df = load_imdb_data()
-
         # Select top 10 movies by IMDb Rating
         df_top30 = df.sort_values(by=['IMDb Rating'], ascending=False).head(30)
 

@@ -11,7 +11,7 @@ secrets = toml.load('secrets.toml')
 db_config = secrets['connections']['mydb']
 
 # Define pastel colors
-pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff"]
+pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff", "#baffc9"]  # Adding pastel green
 
 # Function to execute MySQL query
 def execute_query_mysql(query):

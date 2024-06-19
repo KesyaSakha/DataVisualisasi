@@ -10,6 +10,9 @@ import toml
 secrets = toml.load('secrets.toml')
 db_config = secrets['connections']['mydb']
 
+# Define pastel colors
+pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff"]
+
 # Function to execute MySQL query
 def execute_query_mysql(query):
     try:
@@ -35,7 +38,7 @@ def bar_chart(data, x, y, title, xlabel, ylabel):
     st.write("### Data Table")
     st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.barh(data[x], data[y])
+    ax.barh(data[x], data[y], color=pastel_colors)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_title(title)
@@ -47,7 +50,7 @@ def pie_chart(data, labels, values, title):
     st.write("### Data Table")
     st.dataframe(data)
     fig, ax = plt.subplots(figsize=(8, 8))
-    ax.pie(data[values], labels=data[labels], autopct='%1.1f%%', startangle=140)
+    ax.pie(data[values], labels=data[labels], autopct='%1.1f%%', startangle=140, colors=pastel_colors)
     ax.axis('equal')
     ax.set_title(title)
     plt.tight_layout()
@@ -60,7 +63,7 @@ def scatter_plot(data, x, y, title, xlabel, ylabel):
     data[x] = data[x].astype(float)
     data[y] = data[y].astype(float)
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.regplot(x=x, y=y, data=data, scatter_kws={'color': 'skyblue'}, line_kws={'color': 'red'}, ax=ax)
+    sns.regplot(x=x, y=y, data=data, scatter_kws={'color': pastel_colors[2]}, line_kws={'color': pastel_colors[1]}, ax=ax)
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
@@ -73,7 +76,7 @@ def bubble_plot(data, x, y, title, xlabel, ylabel):
     st.write("### Data Table")
     st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.scatter(data[x], data[y], alpha=0.5)
+    ax.scatter(data[x], data[y], alpha=0.5, color=pastel_colors[0])
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
@@ -85,7 +88,7 @@ def histogram(data, column, bins, title, xlabel, ylabel):
     st.write("### Data Table")
     st.dataframe(data)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.hist(data[column], bins=bins, color='pink', edgecolor='black')
+    ax.hist(data[column], bins=bins, color=pastel_colors[0], edgecolor='black')
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_title(title)
@@ -174,7 +177,7 @@ def main():
         st.subheader('Distribution of Product List Prices (Histogram)')
         histogram(data_df, 'ListPrice', 20, 'Distribution of Product List Prices', 'List Price', 'Frequency')
         st.subheader('Kernel Density Estimate of Product List Prices (KDE Plot)')
-        kde_plot(data_df, 'ListPrice', True, 'purple', 'Kernel Density Estimate of Product List Prices', 'List Price', 'Density')
+        kde_plot(data_df, 'ListPrice', True, pastel_colors[1], 'Kernel Density Estimate of Product List Prices', 'List Price', 'Density')
 
     elif dataset == 'IMDb':
         df = load_imdb_data()
@@ -184,7 +187,7 @@ def main():
         st.write("### Data Table")
         st.dataframe(df_sel)
         fig, ax = plt.subplots(figsize=(12, 6))
-        sns.barplot(data=df_sel, x='Title', y='IMDb Rating', palette='viridis', ax=ax)
+        sns.barplot(data=df_sel, x='Title', y='IMDb Rating', palette=pastel_colors, ax=ax)
         plt.xticks(rotation=90)
         plt.title("Top 40 Comparison Chart - Bar Chart")
         st.pyplot(fig)
@@ -194,7 +197,7 @@ def main():
         st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
-        sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette='viridis', s=100, ax=ax)
+        sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
         plt.title("Relationship Chart - Scatter Plot")
         st.pyplot(fig)
 
@@ -206,7 +209,7 @@ def main():
         st.write("### Data Table")
         st.dataframe(top_10_genres)
         fig, ax = plt.subplots(figsize=(10, 7))
-        wedges, texts, autotexts = ax.pie(top_10_genres['Count'], labels=top_10_genres['Genre'], autopct='%1.1f%%', startangle=90, pctdistance=0.85, wedgeprops=dict(width=0.3))
+        wedges, texts, autotexts = ax.pie(top_10_genres['Count'], labels=top_10_genres['Genre'], autopct='%1.1f%%', startangle=90, pctdistance=0.85, colors=pastel_colors, wedgeprops=dict(width=0.3))
         plt.setp(autotexts, size=10, weight="bold", color="white")
         plt.setp(texts, size=12)
         centre_circle = plt.Circle((0,0),0.70,fc='white')
@@ -221,7 +224,7 @@ def main():
         st.write("### Data Table")
         st.dataframe(df_sel4)
         fig, ax = plt.subplots(figsize=(12, 6))
-        sns.lineplot(data=df_sel4, x='Year', y='Number of Movies', marker='o', ax=ax)
+        sns.lineplot(data=df_sel4, x='Year', y='Number of Movies', marker='o', color=pastel_colors[2], ax=ax)
         plt.title("Distribution - Line Chart (Movies Released Each Year)")
         st.pyplot(fig)
 

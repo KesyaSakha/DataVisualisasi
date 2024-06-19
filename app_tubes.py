@@ -182,18 +182,21 @@ def main():
     elif dataset == 'IMDb':
         df = load_imdb_data()
 
+        # Select top 10 movies by IMDb Rating
+        df_top10 = df.sort_values(by=['IMDb Rating'], ascending=False).head(10)
+
         st.write("1. COMPARISON CHART - BAR CHART")
-        df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
+        df_sel = df_top10[['Title', 'IMDb Rating']]
         st.write("### Data Table")
         st.dataframe(df_sel)
         fig, ax = plt.subplots(figsize=(12, 6))
         sns.barplot(data=df_sel, x='Title', y='IMDb Rating', palette=pastel_colors, ax=ax)
         plt.xticks(rotation=90)
-        plt.title("Top 40 Comparison Chart - Bar Chart")
+        plt.title("Top 10 Comparison Chart - Bar Chart")
         st.pyplot(fig)
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
-        df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
+        df_sel2 = df_top10[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
         st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -202,31 +205,22 @@ def main():
         st.pyplot(fig)
 
         st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")
-        genres = df['Genres'].str.split(',').explode().str.strip()
+        genres = df_top10['Genres'].str.split(',').explode().str.strip()
         genre_counts = genres.value_counts().reset_index()
         genre_counts.columns = ['Genre', 'Count']
         top_10_genres = genre_counts.head(10)
         st.write("### Data Table")
         st.dataframe(top_10_genres)
-        fig, ax = plt.subplots(figsize=(10, 7))
-        wedges, texts, autotexts = ax.pie(top_10_genres['Count'], labels=top_10_genres['Genre'], autopct='%1.1f%%', startangle=90, pctdistance=0.85, colors=pastel_colors, wedgeprops=dict(width=0.3))
-        plt.setp(autotexts, size=10, weight="bold", color="white")
-        plt.setp(texts, size=12)
-        centre_circle = plt.Circle((0,0),0.70,fc='white')
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.pie(top_10_genres['Count'], labels=top_10_genres['Genre'], autopct='%1.1f%%', startangle=140, colors=pastel_colors)
+        # Add a circle at the center to make it look like a donut
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
         fig.gca().add_artist(centre_circle)
-        ax.set_aspect('equal')
-        plt.title("Top 10 Genre Distribution - Donut Chart")
+        ax.axis('equal')
+        ax.set_title("Top 10 Genres - Donut Chart")
+        plt.tight_layout()
         st.pyplot(fig)
 
-        st.write("4. DISTRIBUTION - LINE CHART (Movies Released Each Year)")
-        df_sel4 = df['Year'].value_counts().sort_index().reset_index()
-        df_sel4.columns = ['Year', 'Number of Movies']
-        st.write("### Data Table")
-        st.dataframe(df_sel4)
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sns.lineplot(data=df_sel4, x='Year', y='Number of Movies', marker='o', color=pastel_colors[2], ax=ax)
-        plt.title("Distribution - Line Chart (Movies Released Each Year)")
-        st.pyplot(fig)
-
+# Run the main function
 if __name__ == "__main__":
     main()

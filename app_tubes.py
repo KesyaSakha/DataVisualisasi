@@ -44,7 +44,6 @@ def bar_chart(data, x, y, title, xlabel, ylabel):
     ax.set_title(title)
     plt.tight_layout()
     st.pyplot(fig)
-    plt.close(fig)  # Close the figure to prevent overlapping plots
 
 # Function to display pie chart
 def pie_chart(data, labels, values, title):
@@ -56,21 +55,21 @@ def pie_chart(data, labels, values, title):
     ax.set_title(title)
     plt.tight_layout()
     st.pyplot(fig)
-    plt.close(fig)  # Close the figure to prevent overlapping plots
 
 # Function to display scatter plot
 def scatter_plot(data, x, y, title, xlabel, ylabel):
     st.write("### Data Table")
     st.dataframe(data)
+    data[x] = data[x].astype(float)
+    data[y] = data[y].astype(float)
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.regplot(x=x, y=y, data=data.copy(), scatter_kws={'color': pastel_colors[2]}, line_kws={'color': pastel_colors[1]}, ax=ax)
+    sns.regplot(x=x, y=y, data=data, scatter_kws={'color': pastel_colors[2]}, line_kws={'color': pastel_colors[1]}, ax=ax)
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.grid(True)
     plt.tight_layout()
     st.pyplot(fig)
-    plt.close(fig)  # Close the figure to prevent overlapping plots
 
 # Function to display bubble plot
 def bubble_plot(data, x, y, title, xlabel, ylabel):
@@ -83,7 +82,6 @@ def bubble_plot(data, x, y, title, xlabel, ylabel):
     ax.set_ylabel(ylabel)
     plt.tight_layout()
     st.pyplot(fig)
-    plt.close(fig)  # Close the figure to prevent overlapping plots
 
 # Function to display histogram
 def histogram(data, column, bins, title, xlabel, ylabel):
@@ -97,7 +95,6 @@ def histogram(data, column, bins, title, xlabel, ylabel):
     ax.grid(True)
     plt.tight_layout()
     st.pyplot(fig)
-    plt.close(fig)  # Close the figure to prevent overlapping plots
 
 # Function to display KDE plot
 def kde_plot(data, column, fill, color, title, xlabel, ylabel):
@@ -111,15 +108,14 @@ def kde_plot(data, column, fill, color, title, xlabel, ylabel):
     ax.grid(True)
     plt.tight_layout()
     st.pyplot(fig)
-    plt.close(fig)  # Close the figure to prevent overlapping plots
 
 # Function to load IMDb CSV data
 def load_imdb_data():
     df = pd.read_csv('scraping - top picks.csv')
-    df['IMDb Rating'] = df['IMDb Rating'].astype(float)
-    df['Title'] = df['Title'].astype(str)
-    df['Year'] = pd.to_numeric(df['Year'], errors='coerce')
-    df['Runtime (mins)'] = pd.to_numeric(df['Runtime (mins)'], errors='coerce')
+    df['IMDb Rating'] = df['IMDb Rating'].astype("float")
+    df['Title'] = df['Title'].astype("string")
+    df['Year'] = pd.to_numeric(df['Year'])
+    df['Runtime (mins)'] = pd.to_numeric(df['Runtime (mins)'])
     return df
 
 # Main function
@@ -180,7 +176,6 @@ def main():
 
         st.subheader('Distribution of Product List Prices (Histogram)')
         histogram(data_df, 'ListPrice', 20, 'Distribution of Product List Prices', 'List Price', 'Frequency')
-
         st.subheader('Kernel Density Estimate of Product List Prices (KDE Plot)')
         kde_plot(data_df, 'ListPrice', True, pastel_colors[1], 'Kernel Density Estimate of Product List Prices', 'List Price', 'Density')
 
@@ -188,7 +183,7 @@ def main():
         df = load_imdb_data()
 
         st.write("1. COMPARISON CHART - BAR CHART")
-        df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40).copy()
+        df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
         st.write("### Data Table")
         st.dataframe(df_sel)
         fig, ax = plt.subplots(figsize=(12, 6))
@@ -196,21 +191,16 @@ def main():
         plt.xticks(rotation=90)
         plt.title("Top 40 Comparison Chart - Bar Chart")
         st.pyplot(fig)
-        plt.close(fig)  # Close the figure to prevent overlapping plots
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
-        df_top_ratings = df[df['IMDb Rating'] == 10]
-        df_sel2 = df_top_ratings.sort_values(by='Runtime (mins)')
-        st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
+        df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['Runtime (mins)'])
         st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
-        pastel_colors = sns.color_palette("pastel")  # Define your palette if not defined elsewhere
         sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
         plt.title("Relationship Chart - Scatter Plot")
-        plt.tight_layout()
         st.pyplot(fig)
-        
+
         st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")
         genres = df['Genres'].str.split(',').explode().str.strip()
         genre_counts = genres.value_counts().reset_index()
@@ -227,7 +217,6 @@ def main():
         ax.set_aspect('equal')
         plt.title("Top 10 Genre Distribution - Donut Chart")
         st.pyplot(fig)
-        plt.close(fig)  # Close the figure to prevent overlapping plots
 
         st.write("4. DISTRIBUTION - LINE CHART (Movies Released Each Year)")
         df_sel4 = df['Year'].value_counts().sort_index().reset_index()
@@ -238,6 +227,6 @@ def main():
         sns.lineplot(data=df_sel4, x='Year', y='Number of Movies', marker='o', color=pastel_colors[2], ax=ax)
         plt.title("Distribution - Line Chart (Movies Released Each Year)")
         st.pyplot(fig)
-        plt.close(fig)  # Close the figure to prevent overlapping plots
+
 if __name__ == "__main__":
     main()

@@ -183,13 +183,13 @@ def main():
         df = load_imdb_data()
 
         st.write("1. COMPARISON CHART - BAR CHART")
-        df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
+        df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(10)
         st.write("### Data Table")
         st.dataframe(df_sel)
         fig, ax = plt.subplots(figsize=(12, 6))
         sns.barplot(data=df_sel, x='Title', y='IMDb Rating', palette=pastel_colors, ax=ax)
         plt.xticks(rotation=90)
-        plt.title("Top 40 Comparison Chart - Bar Chart")
+        plt.title("Top 10 Comparison Chart - Bar Chart")
         st.pyplot(fig)
 
         st.write("2. RELATIONSHIP CHART - SCATTER PLOT")

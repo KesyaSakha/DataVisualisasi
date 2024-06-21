@@ -120,7 +120,7 @@ def load_imdb_data():
 
 # Main function
 def main():
-    st.set_page_config(page_title='Visualizations from XAMPP Database and IMDb Data', layout='wide')
+    st.set_page_config(page_title='Final Project Data Visualization', layout='wide')
 
     # Custom CSS
     st.markdown(
@@ -152,11 +152,11 @@ def main():
         unsafe_allow_html=True
     )
 
-    st.title('Visualizations from XAMPP Database and IMDb Data')
+    st.title('Final Project Data Visualization')
     # Sidebar for selecting dataset
-    dataset = st.sidebar.selectbox('Select Dataset', ['Database', 'IMDb'])
+    dataset = st.sidebar.selectbox('Select Dataset', ['Adventure Works', 'IMDb'])
 
-    if dataset == 'Database':
+    if dataset == 'Adventure Works':
         # Query to retrieve product sales data
         sales_query = """
             SELECT DISTINCT dp.EnglishProductName, SUM(fs.SalesAmount) AS TotalSales

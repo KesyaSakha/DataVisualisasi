@@ -122,7 +122,7 @@ def load_imdb_data():
 def main():
     st.set_page_config(page_title='Final Project Data Visualization', layout='wide')
 
-  # Custom CSS
+# Custom CSS
     st.markdown(
         """
         <style>
@@ -142,27 +142,13 @@ def main():
             color: #000000;
         }
         .st-bh {
-            color: #ffffff;
+            color: #000000;
         }
         .css-15tx938 {
             color: #000000;
         }
-        .st-eb {
-            background-color: transparent;
-        }
-        .st-eb:hover, .st-eb:focus {
-            background-color: #ffffff !important;
-        }
-        .css-14xtw13 {
-            background-color: #ffd1dc;
-            color: #000000;
-        }
-        .css-1v3fvcr {
-            background-color: #ffd1dc !important;
-            color: #000000 !important;
-        }
         </style>
-        """,
+        """, 
         unsafe_allow_html=True
     )
 

@@ -320,7 +320,7 @@ def main():
             memberikan gambaran tentang genre yang paling umum dalam dataset.
             """)
 
-        st.subheader('4. DISTRIBUTION - LINE CHART (Movies Released Each Year))
+        st.subheader('4. DISTRIBUTION - LINE CHART (Movies Released Each Year)')
         df_sel4 = df['Year'].value_counts().sort_index().reset_index()
         df_sel4.columns = ['Year', 'Number of Movies']
         st.write("### Data Table")

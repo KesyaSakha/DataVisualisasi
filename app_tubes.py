@@ -10,26 +10,25 @@ import toml
 # Define pastel colors
 pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff", "#baffc9"]  # Adding pastel green
 
+# Function to execute MySQL queries
 def execute_query_mysql(query):
-    conn = None  # Initialize connection variable
+    conn = pymysql.connect(
+        host=st.secrets["mysql"]["host"],
+        port=st.secrets["mysql"]["port"],
+        user=st.secrets["mysql"]["user"],
+        password=st.secrets["mysql"]["password"],
+        database=st.secrets["mysql"]["database"]
+    )
     try:
-        conn = pymysql.connect(
-            host=st.secrets["mysql"]["host"],
-            port=st.secrets["mysql"]["port"],
-            user=st.secrets["mysql"]["user"],
-            password=st.secrets["mysql"]["password"],
-            database=st.secrets["mysql"]["database"]
-        )
         with conn.cursor() as cursor:
             cursor.execute(query)
             result = cursor.fetchall()
             return result
     except Error as e:
         st.error(f"Error: {e}")
-        return None  # Return None or handle error accordingly
     finally:
-        if conn:
-            conn.close()
+        conn.close()
+
 
 
 # Function to display bar chart

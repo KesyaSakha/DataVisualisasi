@@ -192,14 +192,15 @@ def main():
         plt.title("Top 40 Comparison Chart - Bar Chart")
         st.pyplot(fig)
 
-        # 2. RELATIONSHIP CHART - SCATTER PLOT
-        st.write("2. RELATIONSHIP CHART - SCATTER PLOT")
+       # 2. RELATIONSHIP CHART - BUBBLE PLOT
+        st.write("2. RELATIONSHIP CHART - BUBBLE PLOT")
         df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
         st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))
-        sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', hue='IMDb Rating', palette=pastel_colors, s=100, ax=ax)
-        plt.title("Top 40 Relationship Chart - Scatter Plot")
+        bubble_sizes = df_sel2['Runtime (mins)'] * 5  # Adjust size for better visualization
+        sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', size='Runtime (mins)', sizes=(20, 200), hue='IMDb Rating', palette=pastel_colors, alpha=0.6, ax=ax, legend=False)
+        plt.title("Top 40 Relationship Chart - Bubble Plot")
         st.pyplot(fig)
 
         st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")

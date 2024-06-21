@@ -9,13 +9,25 @@ from pymysql import Error
 # Define pastel colors
 pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff", "#baffc9"]  # Adding pastel green
 
-conn = pymysql.connect(
-        host=st.secrets["mysql"]["host"],
-        port=st.secrets["mysql"]["port"],
-        user=st.secrets["mysql"]["user"],
-        password=st.secrets["mysql"]["password"],
-        database=st.secrets["mysql"]["database"]
-    )
+# Function to execute query and return results
+def execute_query_mysql(query):
+    try:
+        conn = pymysql.connect(
+            host=st.secrets["mysql"]["host"],
+            port=int(st.secrets["mysql"]["port"]),  # Ensure port is an integer
+            user=st.secrets["mysql"]["user"],
+            password=st.secrets["mysql"]["password"],
+            database=st.secrets["mysql"]["database"]
+        )
+        cursor = conn.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return result
+    except Error as e:
+        st.error(f"Error: {e}")
+        return None
 
             
 # Function to display bar chart

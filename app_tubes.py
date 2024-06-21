@@ -194,7 +194,7 @@ def main():
 
        # 2. RELATIONSHIP CHART - BUBBLE PLOT
         st.write("2. RELATIONSHIP CHART - BUBBLE PLOT")
-        df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
+        df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(10)
         st.write("### Data Table")
         st.dataframe(df_sel2)
         fig, ax = plt.subplots(figsize=(10, 6))

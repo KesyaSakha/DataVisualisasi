@@ -122,7 +122,7 @@ def load_imdb_data():
 def main():
     st.set_page_config(page_title='Final Project Data Visualization', layout='wide')
 
-# Custom CSS
+    # Custom CSS
     st.markdown(
         """
         <style>
@@ -152,12 +152,14 @@ def main():
         unsafe_allow_html=True
     )
 
-
     st.title('Final Project Data Visualization')
+
     # Sidebar for selecting dataset
     dataset = st.sidebar.selectbox('Select Dataset', ['Adventure Works', 'IMDb'])
 
     if dataset == 'Adventure Works':
+        st.subheader('Adventure Works Visualization')
+        
         # Query to retrieve product sales data
         sales_query = """
             SELECT DISTINCT dp.EnglishProductName, SUM(fs.SalesAmount) AS TotalSales
@@ -168,14 +170,14 @@ def main():
             LIMIT 10
         """
         sales_df = pd.DataFrame(execute_query_mysql(sales_query), columns=['EnglishProductName', 'TotalSales'])
+        
         st.subheader('1. Comparison Chart - Top 10 Products by Total Sales (Bar Chart)')
         bar_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Bar Chart)', 'Total Sales', 'Product Name')
         
         with st.expander("About Visualization"):
             st.write("""
-            Grafik ini menampilkan 10 produk teratas berdasarkan total penjualan. 
-            Setiap batang horizontal mewakili satu produk, dan panjang batang menunjukkan jumlah total penjualan produk tersebut.
-            Dari grafik ini, kita bisa melihat dengan jelas produk mana yang memiliki total penjualan tertinggi dan terendah di antara 10 produk teratas.
+            This bar chart displays the top 10 products by total sales. 
+            Each horizontal bar represents a product, and the length of the bar indicates the total sales of that product.
             """)
 
         st.subheader('Top 10 Products by Total Sales (Pie Chart)')
@@ -183,9 +185,9 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Diagram pai ini menggambarkan distribusi penjualan total untuk 10 produk teratas. 
-            Setiap irisan menunjukkan proporsi penjualan total untuk masing-masing produk. 
-            Diagram ini membantu dalam memahami kontribusi relatif dari setiap produk terhadap total penjualan.
+            This pie chart shows the distribution of total sales for the top 10 products. 
+            Each slice represents the proportion of total sales for each product. 
+            It helps in understanding the relative contribution of each product to the total sales.
             """)
 
         # Query to retrieve StandardCost and ListPrice data
@@ -200,9 +202,9 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Grafik scatter plot ini menampilkan hubungan antara biaya standar dan harga jual produk. 
-            Setiap titik mewakili satu produk, dengan posisi ditentukan oleh biaya standar dan harga jual. 
-            Grafik ini memberikan gambaran tentang bagaimana biaya standar dan harga jual produk terkait satu sama lain.
+            This scatter plot shows the relationship between standard cost and list price of products. 
+            Each point represents a product, with its position determined by standard cost and list price. 
+            This plot provides insights into how standard cost and list price are related to each other.
             """)
 
         st.subheader('Bubble Plot of Product Variables')
@@ -210,8 +212,8 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Bubble plot ini menampilkan variabel produk dengan ukuran gelembung mewakili harga jual dan posisi berdasarkan biaya standar dan harga jual. 
-            Plot ini memberikan gambaran lebih mendalam tentang distribusi dan variasi produk berdasarkan tiga variabel.
+            This bubble plot displays product variables with bubble size representing list price and position based on standard cost and list price. 
+            It provides a deeper insight into the distribution and variation of products based on these three variables.
             """)
 
         # Query to retrieve product composition data by ProductLine
@@ -227,9 +229,9 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Grafik ini menunjukkan komposisi produk berdasarkan garis produk. 
-            Setiap batang mewakili satu garis produk, dan tinggi batang menunjukkan jumlah total produk dalam garis tersebut.
-            Grafik ini membantu dalam memahami distribusi produk di berbagai garis produk.
+            This chart shows the composition of products by product line. 
+            Each bar represents a product line, and the height of the bar indicates the total number of products in that line.
+            It helps in understanding the distribution of products across different product lines.
             """)
 
         # Query to retrieve data to be visualized
@@ -245,9 +247,9 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Histogram ini menampilkan distribusi harga jual produk. 
-            Sumbu horizontal menunjukkan rentang harga jual, sementara sumbu vertikal menunjukkan frekuensi produk dalam rentang tersebut.
-            Grafik ini memberikan gambaran tentang bagaimana harga jual produk tersebar.
+            This histogram displays the distribution of product list prices. 
+            The horizontal axis shows the price range, while the vertical axis shows the frequency of products in that range.
+            It provides an overview of how product prices are distributed.
             """)
 
         st.subheader('Kernel Density Estimate of Product List Prices (KDE Plot)')
@@ -255,11 +257,14 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Grafik KDE ini menampilkan estimasi kepadatan kernel dari harga jual produk. 
-            Garis halus menunjukkan distribusi probabilitas harga jual, memberikan gambaran lebih halus tentang distribusi harga dibandingkan histogram.
+            This KDE plot shows the kernel density estimate of product list prices. 
+            The smooth line represents the probability distribution of list prices, offering a smoother view of the price distribution compared to a histogram.
             """)
 
     elif dataset == 'IMDb':
+        st.subheader('Scrapping and Visualization from IMDb')
+        st.markdown("[Link to IMDb Dataset](https://www.imdb.com/list/ls539678894/?view=detailed)")
+
         df = load_imdb_data()
 
         st.subheader('1. COMPARISON CHART - BAR CHART')
@@ -274,12 +279,11 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Grafik batang ini menampilkan 40 film teratas berdasarkan peringkat IMDb. 
-            Setiap batang mewakili satu film, dan tinggi batang menunjukkan peringkat IMDb. 
-            Grafik ini memudahkan dalam membandingkan peringkat film satu sama lain.
+            This bar chart displays the top 40 movies based on IMDb rating. 
+            Each bar represents a movie, and the height of the bar indicates the IMDb rating. 
+            This chart facilitates comparison of movie ratings.
             """)
 
-       # 2. RELATIONSHIP CHART - BUBBLE PLOT
         st.subheader('2. RELATIONSHIP CHART - BUBBLE PLOT')
         df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(50)
         st.write("### Data Table")
@@ -292,9 +296,9 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Bubble plot ini menampilkan hubungan antara durasi film (dalam menit) dan peringkat IMDb. 
-            Ukuran gelembung menunjukkan durasi film, sementara posisi menunjukkan peringkat IMDb.
-            Plot ini memberikan wawasan tentang apakah ada korelasi antara durasi film dan peringkatnya.
+            This bubble plot shows the relationship between movie duration (in minutes) and IMDb rating. 
+            Bubble size indicates movie duration, while position indicates IMDb rating.
+            It provides insights into whether there is a correlation between movie duration and its rating.
             """)
 
         st.subheader('3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)')
@@ -316,9 +320,9 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Donut chart ini menampilkan distribusi 10 genre teratas dari film dalam dataset.
-            Setiap irisan menunjukkan proporsi film yang termasuk dalam masing-masing genre, 
-            memberikan gambaran tentang genre yang paling umum dalam dataset.
+            This donut chart displays the distribution of the top 10 genres of movies in the dataset.
+            Each slice represents the proportion of movies included in each genre, 
+            providing an overview of the most common genres in the dataset.
             """)
 
         st.subheader('4. DISTRIBUTION - LINE CHART (Movies Released Each Year)')
@@ -333,10 +337,18 @@ def main():
         
         with st.expander("About Visualization"):
             st.write("""
-            Grafik garis ini menunjukkan jumlah film yang dirilis setiap tahun. 
-            Sumbu horizontal menunjukkan tahun, sementara sumbu vertikal menunjukkan jumlah film yang dirilis. 
-            Grafik ini memberikan wawasan tentang tren jumlah rilis film dari waktu ke waktu.
+            This line chart shows the number of movies released each year. 
+            The horizontal axis represents the year, while the vertical axis represents the number of movies released. 
+            This chart provides insights into the trend of movie releases over time.
             """)
+
+    # Tambahkan informasi data diri di akhir halaman
+    st.markdown("""
+        <p style='text-align: left; color: black; font-size: 14px;'>Nama : Fannia Nur Aziza<br>
+        NPM : 21082010170<br>
+        Mata Kuliah : Data Visualisasi<br>
+        Paralel : B</p>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()

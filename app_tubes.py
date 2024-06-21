@@ -31,7 +31,7 @@ def execute_query_mysql(query):
     finally:
         if conn is not None:
             conn.close()
-
+            
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):
     st.write("### Data Table")

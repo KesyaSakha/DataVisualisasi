@@ -155,7 +155,7 @@ def main():
     st.title('Final Project Data Visualization')
 
     # Sidebar for selecting dataset
-    dataset = st.sidebar.selectbox('Select Dataset', ['Adventure Works', 'IMDb'])
+    dataset = st.sidebar.selectbox('Select Dataset', ['Adventure Works', 'IMDb - Top Picks'])
 
     if dataset == 'Adventure Works':
         st.subheader('Adventure Works Visualization')
@@ -261,8 +261,8 @@ def main():
             The smooth line represents the probability distribution of list prices, offering a smoother view of the price distribution compared to a histogram.
             """)
 
-    elif dataset == 'IMDb':
-        st.subheader('Scrapping and Visualization from IMDb')
+    elif dataset == 'IMDb - Top Picks':
+        st.subheader('Scrapping and Visualization from IMDb Top Picks')
         st.markdown("[Link to IMDb Dataset](https://www.imdb.com/list/ls539678894/?view=detailed)")
 
         df = load_imdb_data()
@@ -344,8 +344,8 @@ def main():
 
     # Tambahkan informasi data diri di akhir halaman
     st.markdown("""
-        <p style='text-align: left; color: black; font-size: 14px;'>Nama : Fannia Nur Aziza<br>
-        NPM : 21082010170<br>
+        <p style='text-align: left; color: black; font-size: 14px;'>Nama : Kesya Sakha Nesya Arimawan <br>
+        NPM : 21082010169<br>
         Mata Kuliah : Data Visualisasi<br>
         Paralel : B</p>
     """, unsafe_allow_html=True)

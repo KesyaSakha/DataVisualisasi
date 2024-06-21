@@ -123,20 +123,34 @@ def main():
     st.set_page_config(page_title='Final Project Data Visualization', layout='wide')
 
 # Custom CSS
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #ffd1dc;
-        color: #000000;
-    }
-    .expander-content {
-        color: white !important;
-    }
-    </style>
-    """, 
-    unsafe_allow_html=True
-)
+    st.markdown(
+        """
+        <style>
+        .main {
+            background-color: #ffd1dc;
+            color: #000000;
+        }
+        .css-18e3th9 {
+            padding-top: 2rem;
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+        .css-1d391kg {
+            background-color: #ffd1dc;
+        }
+        .css-1avcm0n {
+            color: #000000;
+        }
+        .st-bh {
+            color: #000000;
+        }
+        .css-15tx938 {
+            color: #000000;
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
 
 
     st.title('Final Project Data Visualization')

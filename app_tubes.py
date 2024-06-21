@@ -167,7 +167,7 @@ def main():
             LIMIT 10
         """
         sales_df = pd.DataFrame(execute_query_mysql(sales_query), columns=['EnglishProductName', 'TotalSales'])
-        st.subheader('Top 10 Products by Total Sales (Bar Chart)')
+        st.subheader('1. Comparison Chart - Top 10 Products by Total Sales (Bar Chart)')
         bar_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Bar Chart)', 'Total Sales', 'Product Name')
         
         with st.expander("About Visualization"):
@@ -177,7 +177,7 @@ def main():
             Dari grafik ini, kita bisa melihat dengan jelas produk mana yang memiliki total penjualan tertinggi dan terendah di antara 10 produk teratas.
             """)
 
-        st.subheader('Top 10 Products by Total Sales (Pie Chart)')
+        st.subheader('Comparison Chart - Top 10 Products by Total Sales (Pie Chart)')
         pie_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Pie Chart)')
         
         with st.expander("About Visualization"):
@@ -194,7 +194,7 @@ def main():
         """
         product_df = pd.DataFrame(execute_query_mysql(product_query), columns=['StandardCost', 'ListPrice'])
 
-        st.subheader('Relationship between Standard Cost and List Price')
+        st.subheader('2. Relationship between Standard Cost and List Price')
         scatter_plot(product_df, 'StandardCost', 'ListPrice', 'Relationship between Standard Cost and List Price', 'Standard Cost', 'List Price')
         
         with st.expander("About Visualization"):
@@ -221,7 +221,7 @@ def main():
         """
         product_line_df = pd.DataFrame(execute_query_mysql(product_line_query), columns=['ProductLine', 'TotalProducts'])
 
-        st.subheader('Composition of Products by Product Line')
+        st.subheader('3. Composition of Products by Product Line')
         bar_chart(product_line_df, 'ProductLine', 'TotalProducts', 'Composition of Products by Product Line', 'Product Line', 'Total Products')
         
         with st.expander("About Visualization"):
@@ -239,7 +239,7 @@ def main():
         """
         data_df = pd.DataFrame(execute_query_mysql(data_query), columns=['ListPrice'])
 
-        st.subheader('Distribution of Product List Prices (Histogram)')
+        st.subheader('4. Distribution of Product List Prices (Histogram)')
         histogram(data_df, 'ListPrice', 20, 'Distribution of Product List Prices', 'List Price', 'Frequency')
         
         with st.expander("About Visualization"):
@@ -261,7 +261,7 @@ def main():
     elif dataset == 'IMDb':
         df = load_imdb_data()
 
-        st.write("1. COMPARISON CHART - BAR CHART")
+        st.subheader('1. COMPARISON CHART - BAR CHART')
         df_sel = df[['Title', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(40)
         st.write("### Data Table")
         st.dataframe(df_sel)
@@ -279,7 +279,7 @@ def main():
             """)
 
        # 2. RELATIONSHIP CHART - BUBBLE PLOT
-        st.write("2. RELATIONSHIP CHART - BUBBLE PLOT")
+        st.subheader('2. RELATIONSHIP CHART - BUBBLE PLOT')
         df_sel2 = df[['Runtime (mins)', 'IMDb Rating']].sort_values(by=['IMDb Rating'], ascending=False).head(50)
         st.write("### Data Table")
         st.dataframe(df_sel2)
@@ -296,7 +296,7 @@ def main():
             Plot ini memberikan wawasan tentang apakah ada korelasi antara durasi film dan peringkatnya.
             """)
 
-        st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")
+        st.subheader('3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)')
         genres = df['Genres'].str.split(',').explode().str.strip()
         genre_counts = genres.value_counts().reset_index()
         genre_counts.columns = ['Genre', 'Count']
@@ -320,7 +320,7 @@ def main():
             memberikan gambaran tentang genre yang paling umum dalam dataset.
             """)
 
-        st.write("4. DISTRIBUTION - LINE CHART (Movies Released Each Year)")
+        st.subheader('4. DISTRIBUTION - LINE CHART (Movies Released Each Year))
         df_sel4 = df['Year'].value_counts().sort_index().reset_index()
         df_sel4.columns = ['Year', 'Number of Movies']
         st.write("### Data Table")

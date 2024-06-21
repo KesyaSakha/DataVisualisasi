@@ -120,8 +120,39 @@ def load_imdb_data():
 
 # Main function
 def main():
-    st.title('Visualizations from XAMPP Database and IMDb Data')
+    st.set_page_config(page_title='Visualizations from XAMPP Database and IMDb Data', layout='wide')
 
+    # Custom CSS
+    st.markdown(
+        """
+        <style>
+        .main {
+            background-color: #ffd1dc;
+            color: #000000;
+        }
+        .css-18e3th9 {
+            padding-top: 2rem;
+            padding-right: 2rem;
+            padding-left: 2rem;
+        }
+        .css-1d391kg {
+            background-color: #ffd1dc;
+        }
+        .css-1avcm0n {
+            color: #000000;
+        }
+        .st-bh {
+            color: #000000;
+        }
+        .css-15tx938 {
+            color: #000000;
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
+
+    st.title('Visualizations from XAMPP Database and IMDb Data')
     # Sidebar for selecting dataset
     dataset = st.sidebar.selectbox('Select Dataset', ['Database', 'IMDb'])
 
@@ -144,7 +175,6 @@ def main():
             Grafik ini menampilkan 10 produk teratas berdasarkan total penjualan. 
             Setiap batang horizontal mewakili satu produk, dan panjang batang menunjukkan jumlah total penjualan produk tersebut.
             Dari grafik ini, kita bisa melihat dengan jelas produk mana yang memiliki total penjualan tertinggi dan terendah di antara 10 produk teratas.
-            Warna pastel yang digunakan membuat grafik lebih menarik dan mudah dibaca.
             """)
 
         st.subheader('Top 10 Products by Total Sales (Pie Chart)')

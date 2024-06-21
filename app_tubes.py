@@ -297,7 +297,7 @@ def main():
         with st.expander("About Visualization"):
             st.write("""
             This bubble plot shows the top 40 movies based on IMDb rating. Each bubble represents a movie, where its position indicates IMDb rating and size corresponds to movie duration (in minutes). 
-            This visualization allows for exploring any relationship between movie duration and rating, focusing specifically on the top-ranked films."
+            This visualization allows for exploring any relationship between movie duration and rating, focusing specifically on the top-ranked films.
             """)
 
         st.subheader('3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)')

@@ -6,32 +6,18 @@ import pymysql
 from pymysql import Error
 import toml
 
-# Load database connection info from secrets.toml
-secrets = toml.load('secrets.toml')
-db_config = secrets['connections']['mydb']
 
 # Define pastel colors
 pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff", "#baffc9"]  # Adding pastel green
 
-# Function to execute MySQL query
-def execute_query_mysql(query):
-    try:
-        db_connection = pymysql.connect(
-            host=db_config['host'],
-            user=db_config['username'],
-            password=db_config['password'],
-            database=db_config['database'],
-            port=int(db_config['port'])
-        )
-        cursor = db_connection.cursor()
-        cursor.execute(query)
-        result = cursor.fetchall()
-        cursor.close()
-        db_connection.close()
-        return result
-    except Error as e:
-        st.error(f"Error while connecting to MySQL: {e}")
-        return None
+def load_adventure_works_data():
+    conn = pymysql.connect(
+        host=st.secrets["mysql"]["host"],
+        port=st.secrets["mysql"]["port"],
+        user=st.secrets["mysql"]["user"],
+        password=st.secrets["mysql"]["password"],
+        database=st.secrets["mysql"]["database"]
+    )
 
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):

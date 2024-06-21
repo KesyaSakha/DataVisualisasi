@@ -12,19 +12,14 @@ pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff", "#baffc9"]  # Adding pastel gr
 def execute_query_mysql(query):
     conn = None
     try:
-        conn = pymysql.connect(
-            host=st.secrets["connections.mydb"]["host"],
-            port=int(st.secrets["connections.mydb"]["port"]),
-            user=st.secrets["connections.mydb"]["username"],
-            password=st.secrets["connections.mydb"]["password"],
-            database=st.secrets["connections.mydb"]["database"]
-        )
+        # Initialize connection using st.connection
+        conn = st.connection("mydb", type="sql", autocommit=True)
         cursor = conn.cursor()
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
         return result
-    except Error as e:
+    except Exception as e:
         st.error(f"Error: {e}")
         return None
     finally:

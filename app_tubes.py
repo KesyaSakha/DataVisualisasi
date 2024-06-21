@@ -4,7 +4,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pymysql
 from pymysql import Error
-import toml
 
 
 # Define pastel colors

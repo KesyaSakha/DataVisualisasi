@@ -10,14 +10,24 @@ import toml
 # Define pastel colors
 pastel_colors = ["#ffb3ba", "#c6b4f8", "#bae1ff", "#baffc9"]  # Adding pastel green
 
-def load_adventure_works_data():
-    conn = pymysql.connect(
-        host=st.secrets["mysql"]["host"],
-        port=st.secrets["mysql"]["port"],
-        user=st.secrets["mysql"]["user"],
-        password=st.secrets["mysql"]["password"],
-        database=st.secrets["mysql"]["database"]
-    )
+def execute_query_mysql(query):
+    try:
+        conn = pymysql.connect(
+            host=st.secrets["mysql"]["host"],
+            port=st.secrets["mysql"]["port"],
+            user=st.secrets["mysql"]["user"],
+            password=st.secrets["mysql"]["password"],
+            database=st.secrets["mysql"]["database"]
+        )
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            result = cursor.fetchall()
+            return result
+    except Error as e:
+        st.error(f"Error: {e}")
+    finally:
+        conn.close()
+
 
 # Function to display bar chart
 def bar_chart(data, x, y, title, xlabel, ylabel):

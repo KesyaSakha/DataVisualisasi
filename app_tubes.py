@@ -44,7 +44,6 @@ def bar_chart(data, x, y, title, xlabel, ylabel):
     ax.set_title(title)
     plt.tight_layout()
     st.pyplot(fig)
-    st.write(f"Grafik ini menampilkan sepuluh produk teratas berdasarkan total penjualannya. Setiap batang horizontal mewakili satu produk, dan panjang batang menunjukkan jumlah penjualan produk tersebut. Dari grafik ini, kita bisa melihat dengan jelas produk mana yang memiliki penjualan tertinggi dan terendah di antara sepuluh produk teratas. Warna pastel yang digunakan membuat grafik lebih menarik dan mudah dibaca. Penjualan tertinggi adalah pada produk X, yang menunjukkan popularitas atau efektivitas strategi penjualannya.")
 
 # Function to display pie chart
 def pie_chart(data, labels, values, title):
@@ -56,7 +55,6 @@ def pie_chart(data, labels, values, title):
     ax.set_title(title)
     plt.tight_layout()
     st.pyplot(fig)
-    st.write(f"Diagram pai ini menggambarkan distribusi penjualan dari sepuluh produk teratas. Setiap irisan pai menunjukkan proporsi penjualan yang dihasilkan oleh masing-masing produk. Diagram ini membantu dalam memahami kontribusi relatif dari setiap produk terhadap total penjualan. Misalnya, produk dengan irisan terbesar adalah produk X, menunjukkan bahwa produk ini memberikan kontribusi terbesar terhadap penjualan total.")
 
 # Function to display scatter plot
 def scatter_plot(data, x, y, title, xlabel, ylabel):
@@ -72,7 +70,6 @@ def scatter_plot(data, x, y, title, xlabel, ylabel):
     ax.grid(True)
     plt.tight_layout()
     st.pyplot(fig)
-    st.write(f"Scatter plot ini menampilkan hubungan antara biaya standar (Standard Cost) dan harga jual (List Price) dari produk. Setiap titik pada grafik mewakili satu produk. Garis regresi yang ditambahkan menunjukkan tren umum dalam data, yaitu apakah ada hubungan linear antara biaya standar dan harga jual. Dari grafik ini, kita bisa melihat apakah produk dengan biaya standar yang lebih tinggi cenderung memiliki harga jual yang lebih tinggi atau tidak.")
 
 # Function to display bubble plot
 def bubble_plot(data, x, y, title, xlabel, ylabel):
@@ -85,7 +82,6 @@ def bubble_plot(data, x, y, title, xlabel, ylabel):
     ax.set_ylabel(ylabel)
     plt.tight_layout()
     st.pyplot(fig)
-    st.write(f"Bubble plot ini mirip dengan scatter plot tetapi dengan tambahan dimensi ukuran untuk mewakili variabel ketiga, seperti kuantitas atau ukuran lainnya. Dalam konteks ini, setiap gelembung mewakili produk, dengan posisinya ditentukan oleh biaya standar dan harga jual, dan ukuran gelembung mungkin mencerminkan jumlah produk atau variabel lain yang relevan. Plot ini memberikan gambaran lebih mendalam tentang distribusi dan variasi produk berdasarkan tiga variabel.")
 
 # Function to display histogram
 def histogram(data, column, bins, title, xlabel, ylabel):
@@ -99,7 +95,6 @@ def histogram(data, column, bins, title, xlabel, ylabel):
     ax.grid(True)
     plt.tight_layout()
     st.pyplot(fig)
-    st.write(f"Histogram ini menampilkan distribusi harga jual produk (List Price). Sumbu horizontal menunjukkan rentang harga, sementara sumbu vertikal menunjukkan frekuensi (jumlah produk) dalam setiap rentang harga. Dari histogram ini, kita bisa melihat bagaimana harga produk tersebar, apakah sebagian besar produk berada dalam rentang harga tertentu, atau ada outlier dengan harga sangat tinggi atau rendah.")
 
 # Function to display KDE plot
 def kde_plot(data, column, fill, color, title, xlabel, ylabel):
@@ -113,7 +108,6 @@ def kde_plot(data, column, fill, color, title, xlabel, ylabel):
     ax.grid(True)
     plt.tight_layout()
     st.pyplot(fig)
-    st.write(f"KDE plot ini adalah representasi visual dari distribusi harga jual produk menggunakan estimasi kepadatan kernel. Grafik ini memberikan gambaran yang lebih halus tentang distribusi harga, berbeda dengan histogram yang menggunakan bin. Dari plot ini, kita bisa melihat puncak dan sebaran harga produk, menunjukkan kecenderungan umum dalam harga produk. Misalnya, jika ada puncak tajam, itu menunjukkan bahwa banyak produk memiliki harga di sekitar nilai tersebut.")
 
 # Function to load IMDb CSV data
 def load_imdb_data():
@@ -144,9 +138,24 @@ def main():
         sales_df = pd.DataFrame(execute_query_mysql(sales_query), columns=['EnglishProductName', 'TotalSales'])
         st.subheader('Top 10 Products by Total Sales (Bar Chart)')
         bar_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Bar Chart)', 'Total Sales', 'Product Name')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Grafik ini menampilkan 10 produk teratas berdasarkan total penjualan. 
+            Setiap batang horizontal mewakili satu produk, dan panjang batang menunjukkan jumlah total penjualan produk tersebut.
+            Dari grafik ini, kita bisa melihat dengan jelas produk mana yang memiliki total penjualan tertinggi dan terendah di antara 10 produk teratas.
+            Warna pastel yang digunakan membuat grafik lebih menarik dan mudah dibaca.
+            """)
 
         st.subheader('Top 10 Products by Total Sales (Pie Chart)')
         pie_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Pie Chart)')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Diagram pai ini menggambarkan distribusi penjualan total untuk 10 produk teratas. 
+            Setiap irisan menunjukkan proporsi penjualan total untuk masing-masing produk. 
+            Diagram ini membantu dalam memahami kontribusi relatif dari setiap produk terhadap total penjualan.
+            """)
 
         # Query to retrieve StandardCost and ListPrice data
         product_query = """
@@ -157,9 +166,22 @@ def main():
 
         st.subheader('Relationship between Standard Cost and List Price')
         scatter_plot(product_df, 'StandardCost', 'ListPrice', 'Relationship between Standard Cost and List Price', 'Standard Cost', 'List Price')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Grafik scatter plot ini menampilkan hubungan antara biaya standar dan harga jual produk. 
+            Setiap titik mewakili satu produk, dengan posisi ditentukan oleh biaya standar dan harga jual. 
+            Grafik ini memberikan gambaran tentang bagaimana biaya standar dan harga jual produk terkait satu sama lain.
+            """)
 
         st.subheader('Bubble Plot of Product Variables')
         bubble_plot(product_df, 'StandardCost', 'ListPrice', 'Bubble Plot of Product Variables', 'Standard Cost', 'List Price')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Bubble plot ini menampilkan variabel produk dengan ukuran gelembung mewakili harga jual dan posisi berdasarkan biaya standar dan harga jual. 
+            Plot ini memberikan gambaran lebih mendalam tentang distribusi dan variasi produk berdasarkan tiga variabel.
+            """)
 
         # Query to retrieve product composition data by ProductLine
         product_line_query = """
@@ -171,6 +193,13 @@ def main():
 
         st.subheader('Composition of Products by Product Line')
         bar_chart(product_line_df, 'ProductLine', 'TotalProducts', 'Composition of Products by Product Line', 'Product Line', 'Total Products')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Grafik ini menunjukkan komposisi produk berdasarkan garis produk. 
+            Setiap batang mewakili satu garis produk, dan tinggi batang menunjukkan jumlah total produk dalam garis tersebut.
+            Grafik ini membantu dalam memahami distribusi produk di berbagai garis produk.
+            """)
 
         # Query to retrieve data to be visualized
         data_query = """
@@ -182,8 +211,22 @@ def main():
 
         st.subheader('Distribution of Product List Prices (Histogram)')
         histogram(data_df, 'ListPrice', 20, 'Distribution of Product List Prices', 'List Price', 'Frequency')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Histogram ini menampilkan distribusi harga jual produk. 
+            Sumbu horizontal menunjukkan rentang harga jual, sementara sumbu vertikal menunjukkan frekuensi produk dalam rentang tersebut.
+            Grafik ini memberikan gambaran tentang bagaimana harga jual produk tersebar.
+            """)
+
         st.subheader('Kernel Density Estimate of Product List Prices (KDE Plot)')
         kde_plot(data_df, 'ListPrice', True, pastel_colors[1], 'Kernel Density Estimate of Product List Prices', 'List Price', 'Density')
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Grafik KDE ini menampilkan estimasi kepadatan kernel dari harga jual produk. 
+            Garis halus menunjukkan distribusi probabilitas harga jual, memberikan gambaran lebih halus tentang distribusi harga dibandingkan histogram.
+            """)
 
     elif dataset == 'IMDb':
         df = load_imdb_data()
@@ -197,7 +240,13 @@ def main():
         plt.xticks(rotation=90)
         plt.title("Top 40 Comparison Chart - Bar Chart")
         st.pyplot(fig)
-        st.write(f"Grafik ini menampilkan 40 film teratas berdasarkan peringkat IMDb mereka. Setiap batang vertikal mewakili satu film, dan tinggi batang menunjukkan peringkat IMDb film tersebut. Dari grafik ini, kita bisa melihat dengan jelas film mana yang memiliki peringkat tertinggi dan terendah di antara 40 film teratas. Warna pastel yang digunakan membuat grafik lebih menarik dan mudah dibaca.")
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Grafik batang ini menampilkan 40 film teratas berdasarkan peringkat IMDb. 
+            Setiap batang mewakili satu film, dan tinggi batang menunjukkan peringkat IMDb. 
+            Grafik ini memudahkan dalam membandingkan peringkat film satu sama lain.
+            """)
 
        # 2. RELATIONSHIP CHART - BUBBLE PLOT
         st.write("2. RELATIONSHIP CHART - BUBBLE PLOT")
@@ -207,9 +256,15 @@ def main():
         fig, ax = plt.subplots(figsize=(10, 6))
         bubble_sizes = df_sel2['Runtime (mins)'] * 5  # Adjust size for better visualization
         sns.scatterplot(data=df_sel2, x='Runtime (mins)', y='IMDb Rating', size='Runtime (mins)', sizes=(20, 200), hue='IMDb Rating', palette=pastel_colors, alpha=0.6, ax=ax, legend=False)
-        plt.title("Top 50 Relationship Chart - Bubble Plot")
+        plt.title("Top 40 Relationship Chart - Bubble Plot")
         st.pyplot(fig)
-        st.write(f"Bubble plot ini menampilkan hubungan antara durasi film (Runtime) dan peringkat IMDb mereka. Setiap gelembung mewakili satu film, dengan posisi ditentukan oleh durasi dan peringkat IMDb, dan ukuran gelembung mencerminkan durasi film. Plot ini memberikan gambaran lebih mendalam tentang distribusi dan variasi film berdasarkan tiga variabel.")
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Bubble plot ini menampilkan hubungan antara durasi film (dalam menit) dan peringkat IMDb. 
+            Ukuran gelembung menunjukkan durasi film, sementara posisi menunjukkan peringkat IMDb.
+            Plot ini memberikan wawasan tentang apakah ada korelasi antara durasi film dan peringkatnya.
+            """)
 
         st.write("3. COMPOSITION CHART - DONUT CHART (Top 10 Genres)")
         genres = df['Genres'].str.split(',').explode().str.strip()
@@ -227,7 +282,13 @@ def main():
         ax.set_aspect('equal')
         plt.title("Top 10 Genre Distribution - Donut Chart")
         st.pyplot(fig)
-        st.write(f"Diagram donat ini menggambarkan distribusi sepuluh genre teratas. Setiap irisan menunjukkan proporsi jumlah film dalam setiap genre. Diagram ini membantu dalam memahami kontribusi relatif dari setiap genre terhadap total jumlah film. Misalnya, genre dengan irisan terbesar menunjukkan bahwa itu adalah genre yang paling banyak diwakili dalam data.")
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Donut chart ini menampilkan distribusi 10 genre teratas dari film dalam dataset.
+            Setiap irisan menunjukkan proporsi film yang termasuk dalam masing-masing genre, 
+            memberikan gambaran tentang genre yang paling umum dalam dataset.
+            """)
 
         st.write("4. DISTRIBUTION - LINE CHART (Movies Released Each Year)")
         df_sel4 = df['Year'].value_counts().sort_index().reset_index()
@@ -238,7 +299,13 @@ def main():
         sns.lineplot(data=df_sel4, x='Year', y='Number of Movies', marker='o', color=pastel_colors[2], ax=ax)
         plt.title("Distribution - Line Chart (Movies Released Each Year)")
         st.pyplot(fig)
-        st.write(f"Line chart ini menunjukkan jumlah film yang dirilis setiap tahun. Sumbu horizontal menunjukkan tahun, sementara sumbu vertikal menunjukkan jumlah film yang dirilis pada tahun tersebut. Dari grafik ini, kita bisa melihat tren perilisan film dari waktu ke waktu, seperti peningkatan atau penurunan jumlah film yang dirilis setiap tahun.")
+        
+        with st.expander("About Visualization"):
+            st.write("""
+            Grafik garis ini menunjukkan jumlah film yang dirilis setiap tahun. 
+            Sumbu horizontal menunjukkan tahun, sementara sumbu vertikal menunjukkan jumlah film yang dirilis. 
+            Grafik ini memberikan wawasan tentang tren jumlah rilis film dari waktu ke waktu.
+            """)
 
 if __name__ == "__main__":
     main()

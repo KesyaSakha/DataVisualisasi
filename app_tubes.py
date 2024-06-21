@@ -177,7 +177,7 @@ def main():
             Dari grafik ini, kita bisa melihat dengan jelas produk mana yang memiliki total penjualan tertinggi dan terendah di antara 10 produk teratas.
             """)
 
-        st.subheader('Comparison Chart - Top 10 Products by Total Sales (Pie Chart)')
+        st.subheader('Top 10 Products by Total Sales (Pie Chart)')
         pie_chart(sales_df, 'EnglishProductName', 'TotalSales', 'Top 10 Products by Total Sales (Pie Chart)')
         
         with st.expander("About Visualization"):
